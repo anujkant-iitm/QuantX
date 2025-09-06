@@ -156,12 +156,19 @@ a { text-decoration: none; }
     color: #555;
 }
 
+/* Sign In Section */
+#signin {
+    text-align: center;
+    padding: 80px 20px;
+    background: #4f46e5;
+    color: white;
+}
+
 /* Footer */
 footer {
     text-align: center;
     padding: 30px 15px;
     background: #f3f4f6;
-    margin-top: 40px;
     font-size: 0.9rem;
     color: #666;
 }
