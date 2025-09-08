@@ -30,11 +30,11 @@ nav {
     display: inline-block;
     height: 32px;
     width: 32px;
-    background-image: url("/CSS/images/QuantX_logo.png");
+    background-image: url("/CSS/images/White-logo.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    filter: drop-shadow(0 0px 1px rgba(255, 255, 255, 0.3));
+    margin-top: 5px;
 }
 
 .logo {
@@ -100,6 +100,7 @@ body {
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #000000;
+    /* background: linear-gradient(to right, #000000, #1e1e57); */
     color: #333;
 }
 
@@ -113,7 +114,7 @@ a { text-decoration: none; }
     background-size: cover;
     background-position: center;
     color: white;
-    min-height:90vh;
+    min-height:100vh;
 }
 .hero h2 {
     font-size: 2.8rem;
@@ -149,20 +150,20 @@ a { text-decoration: none; }
 .btn {
     display: inline-block;
     padding: 12px 25px;
-    background: #fff;
-    color: #4f46e5;
+    background-color: #ffffff;
+    color: #4e89ff;
     border-radius: 8px;
     font-weight: bold;
     transition: all 0.3s ease;
 }
 .btn:hover {
-    background: #e0e7ff;
+    background: #424946;
 }
 
 #dashboard {
     text-align: center;
     padding: 80px 20px;
-    background: #000000;
+    /* background: #000000; */
     color: white;
 }
 .dashboard-image img{
@@ -225,6 +226,7 @@ a { text-decoration: none; }
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #000000;
 }
 #coming_soon div{
     width: 80vw;
