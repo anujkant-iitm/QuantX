@@ -177,6 +177,71 @@ a { text-decoration: none; }
 
 }
 
+#detailed_features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.feature_description {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    padding: 5vw;
+}
+.feature_img {
+    width: 40vw;
+    height: 40vw;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 20px;
+    /* box-shadow: 0 0px 5px rgba(255, 255, 255, 0.9); */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature_img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+}
+.feature_text {
+    width: 40vw;
+    text-align: left;
+}
+.feature_text h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+.feature_text p {
+    font-size: 1.1rem;
+    color: #dddddd;
+}
+
+/* #todo-img{ */
+    background-image: url("/CSS/images/to-do.png");
+}
+@media (max-width: 768px) {
+    .feature_description {
+        flex-direction: column;
+        text-align: center;
+    }
+    .feature_img {
+        width: 80%;
+        height: auto;
+    }
+    .feature_text {
+        max-width: 100%;
+    }
+}
+
+#nutrition_img {
+    background-image: url("/CSS/images/nutrition.png");
+}
+/* #nutrition_text {
+    text-align: left;
+} */
 /* Features Section */
 #features-heading {
     text-align: center;
