@@ -18,11 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             alert('Logged in successfully');
+            window.location.href = '/Dashboard/dashboard.html';
         } catch (signInError) {
             if (signInError.code === 'auth/user-not-found') {
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);
                     alert('Account created and logged in!');
+                    window.location.href = '/Dashboard/dashboard.html';
                 } catch (signupError) {
                     errorMessage.textContent = signupError.message;
                 }
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             alert(`Logged in as ${user.email}`);
+            window.location.href = '/Dashboard/dashboard.html';
         } catch (error) {
             console.error('Google login failed:', error);
             alert(error.message);

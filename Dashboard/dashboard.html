@@ -40,47 +40,11 @@
 </head>
 
 <body>
-
     <div class="container">
         <h1>Welcome to QuantX Dashboard</h1>
         <p>All your productivity tools in one place</p>
         <button id="logout-btn">Logout</button>
     </div>
-
-    <script type="module">
-        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "quantx-studio.firebaseapp.com",
-            projectId: "quantx-studio",
-            storageBucket: "quantx-studio.firebasestorage.app",
-            messagingSenderId: "509999669475",
-            appId: "1:509999669475:web:d375beafafd69f8ed8a5d6",
-            measurementId: "G-BL772GV8MN"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            signOut(auth).then(() => {
-                alert('Logged out successfully');
-                window.location.href = '/d:/Web Design/QuantX/index.html';  // Redirect to login page
-            }).catch((error) => {
-                console.error('Logout error:', error);
-            });
-        });
-
-        // Optional: Protect Dashboard (ensure user is logged in)
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = 'Web Design/QuantX/index.html';  // Redirect if not logged in
-            }
-        });
-    </script>
-
 </body>
 
 </html>
