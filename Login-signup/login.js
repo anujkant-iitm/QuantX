@@ -1,7 +1,8 @@
-// login.js
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-// DOM Elements
+// Initialize Firebase Auth
+const auth = getAuth();
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('auth-form');
     const emailInput = document.getElementById('email');
