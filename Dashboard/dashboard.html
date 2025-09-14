@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuantX Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        button {
+            padding: 0.7rem 1.5rem;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Welcome to QuantX Dashboard</h1>
+        <p>All your productivity tools in one place</p>
+        <button id="logout-btn">Logout</button>
+    </div>
+
+    <script type="module">
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "quantx-studio.firebaseapp.com",
+            projectId: "quantx-studio",
+            storageBucket: "quantx-studio.firebasestorage.app",
+            messagingSenderId: "509999669475",
+            appId: "1:509999669475:web:d375beafafd69f8ed8a5d6",
+            measurementId: "G-BL772GV8MN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                alert('Logged out successfully');
+                window.location.href = '/d:/Web Design/QuantX/index.html';  // Redirect to login page
+            }).catch((error) => {
+                console.error('Logout error:', error);
+            });
+        });
+
+        // Optional: Protect Dashboard (ensure user is logged in)
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'Web Design/QuantX/index.html';  // Redirect if not logged in
+            }
+        });
+    </script>
+
+</body>
+
+</html>
