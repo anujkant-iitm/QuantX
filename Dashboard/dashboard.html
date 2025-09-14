@@ -5,68 +5,99 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuantX Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f4f8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        button {
-            padding: 0.7rem 1.5rem;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #2563eb;
-        }
-    </style>
+    <link rel="stylesheet" href="dashboard.css" />
+    <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Welcome to QuantX Dashboard</h1>
-        <p>All your productivity tools in one place</p>
-        <button id="logout-btn">Logout</button>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <button class="hamburger" id="hamburger" title="Open Menu"><i class="fa-solid fa-bars"></i></button>
+        <input type="text" class="search" placeholder="Search for tasks, events…" />
+        <div class="nav-right">
+            <span class="bell"><i class="fa-solid fa-bell bell-icon"></i></span>
+            <div class="profile">
+                <img src="/CSS/images/QuantX_logo.png" alt="Profile" class="avatar" />
+                <span class="status"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Chatbot -->
+    <div id="openChatbot" title="Open Chatbot"><i class="fa-solid fa-robot"></i></div>
+
+    <div id="chatbot">
+        <div class="chat-header">
+            <h3>AI Chatbot</h3>
+            <button id="closeChatbot" title="Close Chatbot"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your message..." />
+            <button id="sendBtn" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
     </div>
-    <script type="module">
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-        const auth = getAuth();
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">Nutrition Tracker</a>
+            <a href="#">Gym Tracker</a>
+            <a href="#">To-Do List</a>
+            <a href="#">Calendar & Events</a>
+            <a href="#">AI Suggestions</a>
+            <a href="#">Notes</a>
+        </nav>
+        <button class="logout" id="logout">Logout</button>
+    </aside>
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, show dashboard
-                console.log('Welcome,', user.email);
-            } else {
-                // User not signed in → Redirect to login
-                window.location.href = 'index.html';   // or 'login.html'
-            }
-        });
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <section class="card analytics">📊 Weekly Progress Chart</section>
+        <section class="card todo">
+            <h3>To-Do List</h3>
+            <ul>
+                <li>
+                    <input type="checkbox" id="todo1" />
+                    <label for="todo1">Finish UI mockup</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="todo2" />
+                    <label for="todo2">Gym session at 6 PM</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="todo3" />
+                    <label for="todo3">Grocery shopping</label>
+                </li>
+            </ul>
+        </section>
+        <section class="card ai-suggestion">💡 "Try a 10-minute meditation today."</section>
+        <section class="card gym-summary">🏋️ Gym Activity Summary</section>
+        <section class="card nutrition">🥗 Nutrition Intake Summary</section>
+        <section class="card events">📅 Upcoming Events</section>
+    </main>
 
-        // Add logout functionality
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            auth.signOut().then(() => {
-                window.location.href = 'index.html'; // Redirect to login after logout
-            });
-        });
-    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2025 QuantX. <a href="#">Terms & Privacy</a>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="logoutModal">
+        <div class="modal-content">
+            <p>Are you sure you want to logout?</p>
+            <button id="confirmLogout">Yes</button>
+            <button id="cancelLogout">Cancel</button>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
 </body>
 
 </html>

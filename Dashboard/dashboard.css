@@ -1,0 +1,333 @@
+/* Base */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #000000, #1e1e57);
+    color: #fff;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+input,
+button {
+    font-family: inherit;
+}
+#chatbot {
+    position: fixed;
+    bottom: 20px;
+    right: -300px;
+    width: 300px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+}
+
+#openChatbot{
+    width: 50px;
+    height: 50px;
+    border: 3px solid #ffffffad;
+    border-radius: 50%;
+    bottom: 100px;
+    right: 20px;
+    transition: right 0.3s ease;
+    position: fixed;
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+#openChatbot:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ffffff;
+    color: #7482ff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(140, 153, 247, 0.838);
+}
+
+#chatbot.open {
+    right: 20px;
+    transition: right 0.3s ease;
+}
+
+.chat-header {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    font-weight: bold;
+}
+
+.chat-messages {
+    padding: 1rem;
+    height: calc(100% - 120px);
+    overflow-y: auto;
+}  
+
+.chat-input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.chat-input button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+}
+
+
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 0px 0px 10px;
+    background: rgba(18, 18, 18, 0.8);
+    position: sticky;
+    top: 0;
+    width: 98%;
+    margin: 10px auto;
+    z-index: 10;
+    background: rgba(51, 51, 51, 0.6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 0px 2px rgb(255, 255, 255);
+    transition: top 0.3s;
+}
+
+#hamburger {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.search {
+    flex: 1;
+    margin: 0 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 10px;
+}
+
+.profile {
+    /* border: 3px solid #adadad49;  */
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 2px solid #7482ff;
+}
+
+.bell {
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    color: #7482ff;
+}
+
+.bell:hover {
+    color: #a3a9ff;
+    transition: color 0.2s;
+}
+
+.avatar {
+    height: 32px;
+    width: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.avatar:hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(140, 153, 247, 0.838);
+}
+
+.status {
+    width: 8px;
+    height: 8px;
+    background: #4caf50;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 5px;
+    left: -300px;
+    width: 250px;
+    border-radius: 20px;
+    height: 90%;
+    box-shadow: #ffffffad 0px 2px 5px;
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    padding: 2rem 1rem;
+    transition: left 0.3s ease;
+    z-index: 20;
+}
+
+.sidebar nav a {
+    display: block;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.logout {
+    position: absolute;
+    bottom: 2rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: none;
+    z-index: 15;
+}
+
+/* Dashboard */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.05);
+    position: absolute;
+    bottom: 0;
+    width: 100%;   
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(18, 18, 18, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+}
+
+.modal-content {
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.modal-content button {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
