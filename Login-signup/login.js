@@ -1,5 +1,4 @@
 // login.js
-import { auth } from './firebase-config.js';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 // DOM Elements
