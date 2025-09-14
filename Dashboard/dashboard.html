@@ -45,6 +45,28 @@
         <p>All your productivity tools in one place</p>
         <button id="logout-btn">Logout</button>
     </div>
+    <script type="module">
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+        const auth = getAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, show dashboard
+                console.log('Welcome,', user.email);
+            } else {
+                // User not signed in → Redirect to login
+                window.location.href = 'index.html';   // or 'login.html'
+            }
+        });
+
+        // Add logout functionality
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = 'index.html'; // Redirect to login after logout
+            });
+        });
+    </script>
 </body>
 
 </html>
