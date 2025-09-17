@@ -53,3 +53,33 @@ button:hover {
     background: #db4437;
     margin-top: 20px;
 }
+
+/* login.css (Add this at the end) */
+
+/* ... (your existing CSS code is fine) ... */
+
+#auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* Add some space between inputs and buttons */
+}
+
+/* Style for login/signup buttons inside the form */
+#auth-form button {
+    margin-top: 0;
+}
+
+#signup-btn {
+    background-color: #5a6268;
+    /* A different color for signup */
+}
+
+#signup-btn:hover {
+    background-color: #6c757d;
+}
+
+/* Optional: Add a separator */
+p {
+    margin: 20px 0 10px;
+}/* login.css (Add this at the end) */

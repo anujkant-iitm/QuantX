@@ -7,88 +7,91 @@
     <title>QuantX Dashboard</title>
     <link rel="stylesheet" href="dashboard.css" />
     <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <div class="overlay" id="overlay"></div>
 
-    <!-- Navbar -->
     <header class="navbar">
-        <button class="hamburger" id="hamburger" title="Open Menu"><i class="fa-solid fa-bars"></i></button>
-        <input type="text" class="search" placeholder="Search for tasks, events…" />
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu"><i
+                class="fa-solid fa-bars"></i></button>
+        <input type="text" class="search" placeholder="Search..." />
         <div class="nav-right">
-            <span class="bell"><i class="fa-solid fa-bell bell-icon"></i></span>
+            <span class="bell"><i class="fa-solid fa-bell"></i></span>
             <div class="profile">
-                <img src="/CSS/images/QuantX_logo.png" alt="Profile" class="avatar" />
-                <span class="status"></span>
+                <img id="profile-pic" src="/CSS/images/QuantX_logo.png" alt="Profile" class="avatar" />
             </div>
         </div>
     </header>
 
-    <!-- Chatbot -->
-    <div id="openChatbot" title="Open Chatbot"><i class="fa-solid fa-robot"></i></div>
-
-    <div id="chatbot">
-        <div class="chat-header">
-            <h3>AI Chatbot</h3>
-            <button id="closeChatbot" title="Close Chatbot"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <!-- Chat messages will appear here -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Type your message..." />
-            <button id="sendBtn" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <nav>
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">Nutrition Tracker</a>
-            <a href="#">Gym Tracker</a>
-            <a href="#">To-Do List</a>
-            <a href="#">Calendar & Events</a>
-            <a href="#">AI Suggestions</a>
-            <a href="#">Notes</a>
+            <a href="#" class="active"><i class="fa-solid fa-table-columns"></i> &nbsp; Dashboard</a>
+            <a href="#"><i class="fa-solid fa-utensils"></i> &nbsp; Nutrition Tracker</a>
+            <a href="#"><i class="fa-solid fa-dumbbell"></i> &nbsp; Gym Tracker</a>
+            <a href="#"><i class="fa-solid fa-list-check"></i> &nbsp; To-Do List</a>
+            <a href="#"><i class="fa-solid fa-calendar-days"></i> &nbsp; Calendar & Events</a>
         </nav>
-        <button class="logout" id="logout">Logout</button>
+        <button class="logout" id="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> &nbsp; Logout</button>
     </aside>
 
-    <!-- Main Dashboard -->
-    <main class="dashboard">
-        <section class="card analytics">📊 Weekly Progress Chart</section>
-        <section class="card todo">
-            <h3>To-Do List</h3>
-            <ul>
-                <li>
-                    <input type="checkbox" id="todo1" />
-                    <label for="todo1">Finish UI mockup</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="todo2" />
-                    <label for="todo2">Gym session at 6 PM</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="todo3" />
-                    <label for="todo3">Grocery shopping</label>
-                </li>
+    <main class="dashboard-grid">
+        <header class="dashboard-header">
+            <h1 id="welcome-message">Welcome, User!</h1>
+            <p>Here’s your snapshot for today. Stay focused and productive!</p>
+        </header>
+
+        <section class="card card-large">
+            <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> Weekly Productivity</h2>
+            <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2 class="card-title"><i class="fa-solid fa-list-check"></i> Today's Tasks</h2>
+            <ul id="todo-list" class="task-list">
+            </ul>
+            <form id="todo-form" class="task-form">
+                <input type="text" id="todo-input" placeholder="Add a new task..." required />
+                <button type="submit">+</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2 class="card-title"><i class="fa-solid fa-utensils"></i> Nutrition Intake</h2>
+            <div class="nutrition-item">
+                <span>Calories</span>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 70%; background-color: #4caf50;"></div>
+                </div>
+                <span>1400/2000</span>
+            </div>
+            <div class="nutrition-item">
+                <span>Protein (g)</span>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 80%; background-color: #f44336;"></div>
+                </div>
+                <span>120/150</span>
+            </div>
+        </section>
+
+        <section class="card card-ai">
+            <h2 class="card-title"><i class="fa-solid fa-robot"></i> AI Suggestion</h2>
+            <p>"Based on your schedule, try a 20-minute walk after lunch to boost your energy."</p>
+        </section>
+
+        <section class="card">
+            <h2 class="card-title"><i class="fa-solid fa-calendar-day"></i> Upcoming Deadlines</h2>
+            <ul class="event-list">
+                <li><span>Sep 19</span> Project Submission</li>
+                <li><span>Sep 22</span> Mid-term Exam</li>
             </ul>
         </section>
-        <section class="card ai-suggestion">💡 "Try a 10-minute meditation today."</section>
-        <section class="card gym-summary">🏋️ Gym Activity Summary</section>
-        <section class="card nutrition">🥗 Nutrition Intake Summary</section>
-        <section class="card events">📅 Upcoming Events</section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        &copy; 2025 QuantX. <a href="#">Terms & Privacy</a>
-    </footer>
-
-    <!-- Modal -->
     <div class="modal" id="logoutModal">
         <div class="modal-content">
             <p>Are you sure you want to logout?</p>
@@ -97,7 +100,8 @@
         </div>
     </div>
 
-    <script src="dashboard.js"></script>
+    <script src="/JavaScript/firebase-config.js" type="module"></script>
+    <script src="dashboard.js" type="module"></script>
 </body>
 
 </html>

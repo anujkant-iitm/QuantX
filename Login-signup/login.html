@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuantX - Login / Signup</title>
     <link rel="stylesheet" href="login.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
-    
 </head>
 
 <body>
@@ -19,37 +18,19 @@
 
         <form id="auth-form">
             <input type="email" id="email" placeholder="Email" required />
-            <input type="password" id="password" placeholder="Password" required />
-            <button type="submit">Login / Signup</button>
+            <input type="password" id="password" placeholder="Password (min. 6 characters)" required />
+
+            <button type="submit" id="login-btn">Login</button>
+            <button type="button" id="signup-btn">Signup</button>
         </form>
+
+        <p>or</p>
 
         <button id="google-login-btn"><i class="fa-brands fa-google"></i>&nbsp;Sign in with Google</button>
         <p id="error-message"></p>
     </div>
 
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyAWa3itQgOYerg-xh1FHvYx8_xPROFmIpM",
-            authDomain: "quantx-studio.firebaseapp.com",
-            projectId: "quantx-studio",
-            storageBucket: "quantx-studio.firebasestorage.app",
-            messagingSenderId: "509999669475",
-            appId: "1:509999669475:web:d375beafafd69f8ed8a5d6",
-            measurementId: "G-BL772GV8MN"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-    </script>
+    <script type="module" src="/JavaScript/firebase-config.js"></script>
     <script type="module" src="login.js"></script>
 </body>
 

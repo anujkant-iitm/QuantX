@@ -2,122 +2,164 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuantX – Productivity & Lifestyle Platform</title>
-  <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
-  <link rel="stylesheet" href="CSS/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantX – AI-Powered Productivity & Lifestyle Platform</title>
+    <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
+    <link rel="stylesheet" href="/CSS/index.css">
 </head>
 
 <body>
-  <nav>
-    <div class="nav-left">
+    <!-- Animated background -->
+    <div class="bg-animation"></div>
 
-      <div class="logo">
-        <span class="logo-image"></span>
-        <span class="logo-text">QuantX</span>
-      </div>
-      <!-- <a href="#" class="contact-btn">Contact</a> -->
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
 
-    </div>
-
-
-    <div class="nav-right">
-      <a href="/Login-signup/login.html" class="sign-in-btn">Sign In</a>
-    </div>
-
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <h2>AI-Powered Productivity & Lifestyle Platform</h2>
-    <p>One-stop solution for college students: Manage academics, health, and lifestyle in a single dashboard.</p>
-    <a href="#signin" class="btn">Get Started</a>
-    <div id="hero_img">
-      <!-- <img src="CSS/images/productivity.png" alt="Productivity image"> -->
-      <img src="CSS/images/QuantX_logo.png" alt="QuantX Logo">
-    </div>
-  </section>
-
-  <!-- Dashboard -->
-  <section id="dashboard">
-    <h1>All-in-One Dashboard</h1>
-    <p>Seamlessly integrate nutrition tracking, task management, note-taking, and fitness monitoring.</p>
-    <div class="dashboard-image">
-      <img src="CSS/images/dashboard.png" alt="Dashboard image">
-    </div>
-  </section>
-
-  <section id="detailed_features">
-
-    <div id="nutrition_tracker" class="feature_description">
-      <div class="feature_img" id="nutrition_img"></div>
-      <div class="feature_text" id="nutrition_text">
-        <h3>📊 Nutrition Tracker</h3>
-        <p>Track daily meals, calories, proteins, carbs, and fats with AI-based diet recommendations.</p>
-      </div>
-    </div>
-    <!-- <div id="todo_list" class="feature_description">
-        <div class="feature_text" id="todo_text">
-          <h3>✅ To-Do List</h3>
-          <p>Organize daily tasks, set reminders, and never miss deadlines again.</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">
+                <img src="/CSS/images/White-logo.png" alt="Logo">
+            </div>
+            <span>QuantX</span>
         </div>
-        <div class="feature_img" id="todo_img"></div>; -->
-  </section>
+        <a href="/Login-signup/login.html" class="sign-in-btn">Sign In</a>
+    </nav>
 
-  <!-- Features -->
-  <section id="features">
-    <h1 id="features-heading">Everything You Need :)</h1>
-    <section id="features" class="features">
-      <div class="card">
-        <h3>📊 Nutrition Tracker</h3>
-        <p>Track daily meals, calories, proteins, carbs, and fats with AI-based diet recommendations.</p>
-      </div>
-      <div class="card">
-        <h3>✅ To-Do List</h3>
-        <p>Organize daily tasks, set reminders, and never miss deadlines again.</p>
-      </div>
-      <div class="card">
-        <h3>📅 Task Manager & Calendar</h3>
-        <p>Plan your schedule, sync with classes, and prioritize important tasks with ease.</p>
-      </div>
-      <div class="card">
-        <h3>🏋️ Gym Tracker</h3>
-        <p>Log workouts, track progress, and balance your fitness goals with academics.</p>
-      </div>
-      <div class="card">
-        <h3>📝 Note Taking</h3>
-        <p>Save, organize, and share class notes instantly with peers.</p>
-      </div>
-      <div class="card">
-        <h3>🧑‍💻 Progress Tracker</h3>
-        <p>Monitor your academic progress, set goals, and celebrate achievements.</p>
-      </div>
-      <div class="card">
-        <h3>🧾 AI Summarizer</h3>
-        <p>Summarize lecture notes, documents, or articles instantly with AI-powered summaries.</p>
-      </div>
-      <div class="card">
-        <h3>🤖 AI Chat Bot</h3>
-        <p>Get instant academic support, productivity tips, and lifestyle suggestions with our AI Bot.</p>
-      </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>AI-Powered Productivity & Lifestyle Platform</h1>
+        <p>The ultimate one-stop solution for college students: Seamlessly manage academics, health, and lifestyle in a
+            single, intelligent dashboard.</p>
+        <a href="#features" class="cta-button">Explore Features</a>
+        <div class="hero-visual">
+            <div class="hero-logo">
+                <img src="/CSS/images/White-logo.png" alt="Logo">
+            </div>
+        </div>
     </section>
 
-    <!-- Sign In Section -->
-    <!-- <section id="signin">
-      <h2>Ready to Experience QuantX?</h2>
-      <p>Sign in to unlock full access to the platform.</p>
-      <a href="signin.html" class="btn">Sign In</a>
-    </section> -->
+    <!-- Dashboard Section -->
+    <section class="dashboard-section fade-in">
+        <h2 class="section-title">All-in-One Dashboard</h2>
+        <p class="section-subtitle">Experience seamless integration of nutrition tracking, task management, note-taking,
+            and fitness monitoring in one beautiful interface.</p>
 
-    <section id="coming_soon">
-      <div></div>
+        <div class="dashboard-image">
+            <img src="CSS/images/dashboard.png" alt="Dashboard image">
+        </div>
+
+        <!-- <div class="dashboard-preview">
+            <div class="dashboard-mockup">
+                <div class="dashboard-header">
+                    <h3>🎯 Your Productivity Hub</h3>
+                    <span>🌟 AI-Powered Insights</span>
+                </div>
+                <div class="dashboard-content">
+                    <div class="dashboard-widget">
+                        <h4>📊 Nutrition</h4>
+                        <p>Daily: 2,100 cal</p>
+                    </div>
+                    <div class="dashboard-widget">
+                        <h4>✅ Tasks</h4>
+                        <p>8/12 completed</p>
+                    </div>
+                    <div class="dashboard-widget">
+                        <h4>🏋️ Fitness</h4>
+                        <p>45 min workout</p>
+                    </div>
+                    <div class="dashboard-widget">
+                        <h4>📚 Study</h4>
+                        <p>3 notes saved</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </section>
 
+    <!-- Features Section -->
+    <section class="features-section fade-in" id="features">
+        <div id="feature-heading">
+            <h2 class="section-title">Everything You Need</h2>
+            <p class="section-subtitle">Comprehensive tools designed specifically for the modern college student's
+                lifestyle.</p>
+        </div>
 
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <h3 class="feature-title">Smart Nutrition Tracker</h3>
+                <p class="feature-description">Track daily meals, calories, proteins, carbs, and fats with AI-powered
+                    diet recommendations tailored to your goals and preferences.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">✅</span>
+                <h3 class="feature-title">Intelligent To-Do List</h3>
+                <p class="feature-description">Organize tasks with smart prioritization, set contextual reminders, and
+                    never miss important deadlines with AI-powered scheduling.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📅</span>
+                <h3 class="feature-title">Task Manager & Calendar</h3>
+                <p class="feature-description">Seamlessly plan your schedule, sync with classes, and optimize your time
+                    with intelligent task prioritization algorithms.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🏋️</span>
+                <h3 class="feature-title">Comprehensive Gym Tracker</h3>
+                <p class="feature-description">Log workouts, track progress with visual analytics, and balance fitness
+                    goals with academic commitments effortlessly.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📝</span>
+                <h3 class="feature-title">Smart Note Taking</h3>
+                <p class="feature-description">Capture, organize, and share class notes instantly with peers. Features
+                    smart tagging and search capabilities.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📈</span>
+                <h3 class="feature-title">Progress Analytics</h3>
+                <p class="feature-description">Monitor academic progress with detailed insights, set achievable goals,
+                    and celebrate milestones with gamified achievements.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🤖</span>
+                <h3 class="feature-title">AI Document Summarizer</h3>
+                <p class="feature-description">Instantly summarize lecture notes, research papers, and documents with
+                    advanced AI. Save hours of reading time.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">💬</span>
+                <h3 class="feature-title">Personal AI Assistant</h3>
+                <p class="feature-description">Get instant academic support, productivity tips, and personalized
+                    lifestyle suggestions from your intelligent AI companion.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon Section -->
+    <section class="coming-soon fade-in">
+        <div class="coming-soon-box">
+            <div class="coming-soon-content">
+                <div class="marquee-container">
+                    <div class="marquee-text">🚀 COMING SOON 🚀</div>
+                </div>
+                <p>More exciting features are on the way!<br>Stay tuned for updates and new capabilities.</p>
+            </div>
+        </div>
+    </section>
     <!-- Footer -->
     <footer>
-      © 2025 QuantX Team | Designed for Students, by Students
+        <p>© 2025 QuantX Team | Designed for Students, by Students</p>
+        <p style="margin-top: 10px; opacity: 0.5;">🎯 Empowering the next generation of achievers</p>
     </footer>
     <script src="/JavaScript/index.js" defer></script>
 </body>
