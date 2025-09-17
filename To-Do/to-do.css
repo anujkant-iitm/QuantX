@@ -1,290 +1,244 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
+/* --- Base, Fonts, and Variables (Consistent with Dashboard) --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --background-dark: #0f0c29;
+    --card-bg: rgba(15, 12, 41, 0.6);
+    --text-primary: #e0e0e0;
+    --text-secondary: #a3a9ff;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --brand-gradient: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+* {
     margin: 0;
     padding: 0;
-    color: #333;
-    background-color: #E0FFFF;
-}
-.bg-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(-45deg, #000000, #0700628e, #000000, #0000008e);
-    background-size: 400% 400%;
-    animation: gradientShift 30s ease infinite;
-    z-index: -1;
+    box-sizing: border-box;
 }
 
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--background-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
 }
 
+/* Consistent Animated Background */
+.bg-animation,
+.particles {
+    /* ... (Same as dashboard CSS) */
+}
 
-.todo-app-container {
+/* --- Main Layout --- */
+.app-container {
     max-width: 800px;
-    margin: 40px 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    overflow: hidden;
+    margin: 2rem auto;
+    padding: 1rem;
 }
 
-.todo-input-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 30px;
-    text-align: center;
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.5s ease-out;
 }
 
-.todo-input-section h2 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.back-btn {
+    color: var(--text-secondary);
+    text-decoration: none;
     font-weight: 600;
 }
 
-.todo-input {
+h1 {
     display: flex;
-    gap: 10px;
-    max-width: 500px;
-    margin: 0 auto;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-#todoInput {
+/* --- Glass Card for the App --- */
+.todo-app-card {
+    background: var(--card-bg);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Input Section --- */
+.todo-input-section form {
+    display: flex;
+    padding: 1.5rem;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#task-input {
     flex: 1;
-    padding: 12px 16px;
-    border: none;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    font-size: 16px;
-    outline: none;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 1rem;
 }
 
-.add-btn {
-    padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+#add-task-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--brand-gradient);
+    border: none;
     border-radius: 8px;
     color: white;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.add-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+#add-task-btn:hover {
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
+/* --- Filters --- */
 .todo-filters {
     display: flex;
-    padding: 20px 30px;
-    gap: 10px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .filter-btn {
-    padding: 8px 16px;
-    background: white;
-    border: 2px solid #e9ecef;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
     border-radius: 20px;
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
 }
 
 .filter-btn:hover {
-    border-color: #667eea;
-    color: #667eea;
+    background: var(--border-color);
 }
 
 .filter-btn.active {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
+    background: var(--text-secondary);
+    color: var(--background-dark);
+    border-color: var(--text-secondary);
+    font-weight: 600;
 }
 
+/* --- Task List --- */
 .todo-list-container {
-    min-height: 200px;
-    padding: 30px;
-}
-
-.loading-state {
-    text-align: center;
-    color: #6c757d;
-    padding: 40px 0;
-    font-style: italic;
+    min-height: 300px;
+    padding: 1.5rem;
 }
 
 .todo-list {
     list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
 .todo-item {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 15px;
-    margin-bottom: 10px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.task-content {
+    flex-grow: 1;
+}
+
+.task-text {
+    font-size: 1.1rem;
     transition: all 0.3s ease;
 }
 
-.todo-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.task-timestamps {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
 }
 
-.todo-item.completed {
-    opacity: 0.7;
-    border-left-color: #28a745;
-}
-
-.todo-item.completed .todo-text {
-    text-decoration: line-through;
-    color: #6c757d;
-}
-
-.todo-checkbox {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #667eea;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
-
-.todo-checkbox.checked {
-    background: #28a745;
-    border-color: #28a745;
-}
-
-.todo-checkbox.checked::after {
-    content: '✓';
-    position: absolute;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.todo-text {
-    flex: 1;
-    font-size: 16px;
-    line-height: 1.4;
-}
-
-.todo-timestamp {
-    font-size: 12px;
-    color: #6c757d;
-    margin-right: 10px;
-}
-
-.delete-btn {
-    background: #dc3545;
-    color: white;
+.task-actions button {
+    background: none;
     border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
+    color: #9ca3af;
+    font-size: 1.2rem;
     cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
+    padding: 0.5rem;
 }
 
 .delete-btn:hover {
-    background: #c82333;
+    color: #f87171;
 }
 
-.empty-state {
+.todo-checkbox {
+    /* Same style as dashboard */
+}
+
+/* Completed Task Styles */
+.todo-item.completed .task-text {
+    text-decoration: line-through;
+    color: #9ca3af;
+}
+
+/* Loading / Empty States */
+.state-message {
     text-align: center;
-    color: #6c757d;
-    padding: 60px 20px;
+    color: #9ca3af;
+    padding: 4rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .empty-icon {
     font-size: 3rem;
-    margin-bottom: 10px;
 }
 
-.todo-stats {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px 30px;
-    background: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-number {
-    display: block;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #667eea;
-}
-
-.stat-label {
-    font-size: 14px;
-    color: #6c757d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.error-message {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    margin: 20px 30px;
-    border-radius: 8px;
-    border: 1px solid #f5c6cb;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .todo-input {
-        flex-direction: column;
-    }
-
-    .todo-filters {
-        padding: 15px 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .todo-list-container {
-        padding: 20px;
-    }
-
-    .todo-item {
-        padding: 12px;
-    }
-
-    .todo-stats {
-        padding: 15px 20px;
-    }
+.spinner {
+    /* Same style as login page */
 }

@@ -6,14 +6,14 @@ const db = getFirestore();
 let currentUser;
 
 // --- Authentication State Observer ---
-// onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//         currentUser = user;
-//         initializeDashboard(user);
-//     } else {
-//         window.location.href = '/Login-signup/login.html';
-//     }
-// });
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+        initializeDashboard(user);
+    } else {
+        window.location.href = '/Login-signup/login.html';
+    }
+});
 
 function initializeDashboard(user) {
     // ... (All initialization code from previous turn remains the same)
