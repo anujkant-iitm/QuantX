@@ -14,94 +14,113 @@
 <body>
     <div class="overlay" id="overlay"></div>
 
-    <header class="navbar">
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu"><i
-                class="fa-solid fa-bars"></i></button>
-        <input type="text" class="search" placeholder="Search..." />
-        <div class="nav-right">
-            <span class="bell"><i class="fa-solid fa-bell"></i></span>
-            <div class="profile">
-                <img id="profile-pic" src="/CSS/images/QuantX_logo.png" alt="Profile" class="avatar" />
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="/CSS/images/White-logo.png" alt="Logo" class="sidebar-logo">
+                <h2>QuantX</h2>
             </div>
-        </div>
-    </header>
+            <nav>
+                <a href="#" class="active"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
+                <a href="#"><i class="fa-solid fa-utensils"></i><span>Nutrition</span></a>
+                <a href="#"><i class="fa-solid fa-dumbbell"></i><span>Fitness</span></a>
+                <a href="/To-Do/to-do.html"><i class="fa-solid fa-list-check"></i><span>All Tasks</span></a>
+                <a href="#"><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></a>
+            </nav>
+            <button class="logout" id="logoutBtn"><i
+                    class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></button>
+        </aside>
 
-    <aside class="sidebar" id="sidebar">
-        <nav>
-            <a href="#" class="active"><i class="fa-solid fa-table-columns"></i> &nbsp; Dashboard</a>
-            <a href="#"><i class="fa-solid fa-utensils"></i> &nbsp; Nutrition Tracker</a>
-            <a href="#"><i class="fa-solid fa-dumbbell"></i> &nbsp; Gym Tracker</a>
-            <a href="#"><i class="fa-solid fa-list-check"></i> &nbsp; To-Do List</a>
-            <a href="#"><i class="fa-solid fa-calendar-days"></i> &nbsp; Calendar & Events</a>
-        </nav>
-        <button class="logout" id="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> &nbsp; Logout</button>
-    </aside>
-
-    <main class="dashboard-grid">
-        <header class="dashboard-header">
-            <h1 id="welcome-message">Welcome, User!</h1>
-            <p>Here’s your snapshot for today. Stay focused and productive!</p>
-        </header>
-
-        <section class="card card-large">
-            <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> Weekly Productivity</h2>
-            <div class="chart-container">
-                <canvas id="progressChart"></canvas>
-            </div>
-        </section>
-
-        <section class="card">
-            <h2 class="card-title"><i class="fa-solid fa-list-check"></i> Today's Tasks</h2>
-            <ul id="todo-list" class="task-list">
-            </ul>
-            <form id="todo-form" class="task-form">
-                <input type="text" id="todo-input" placeholder="Add a new task..." required />
-                <button type="submit">+</button>
-            </form>
-        </section>
-
-        <section class="card">
-            <h2 class="card-title"><i class="fa-solid fa-utensils"></i> Nutrition Intake</h2>
-            <div class="nutrition-item">
-                <span>Calories</span>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 70%; background-color: #4caf50;"></div>
+        <main class="dashboard-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="hamburger" id="hamburger" title="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+                    <div class="welcome-section">
+                        <h1 id="welcome-message">Welcome, User!</h1>
+                        <p id="current-date">Thursday, 18 September</p>
+                    </div>
                 </div>
-                <span>1400/2000</span>
-            </div>
-            <div class="nutrition-item">
-                <span>Protein (g)</span>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 80%; background-color: #f44336;"></div>
+                <div class="header-right">
+                    <button class="notification-btn" title="Notifications"><i class="fa-solid fa-bell"></i></button>
+                    <img id="profile-pic" src="/CSS/images/QuantX_logo.png" alt="Profile" class="avatar" />
                 </div>
-                <span>120/150</span>
+            </header>
+
+            <div class="dashboard-grid">
+                <section class="card card-ai-suggestion">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <h2 class="card-title"><i class="fa-solid fa-robot"></i> AI Insight of the Day</h2>
+                        <p id="ai-suggestion-text">"Based on your upcoming deadlines and recent workouts, consider a
+                            30-minute cardio session to boost focus and reduce stress."</p>
+                    </div>
+                </section>
+
+                <section class="card card-large">
+                    <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> Weekly Productivity</h2>
+                    <div class="chart-container">
+                        <canvas id="productivityChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 class="card-title"><i class="fa-solid fa-list-check"></i> Today's Priority Tasks</h2>
+                    <ul id="todo-list" class="task-list">
+                    </ul>
+                    <a href="/To-Do/to-do.html" class="view-all-tasks-btn">Manage All Tasks &rarr;</a>
+                </section>
+
+                <section class="card">
+                    <h2 class="card-title"><i class="fa-solid fa-utensils"></i> Nutrition Snapshot</h2>
+                    <div class="nutrition-item">
+                        <div class="nutrition-label"><span>Calories</span><span id="calories-stats">1400 / 2000
+                                kcal</span></div>
+                        <div class="progress-bar">
+                            <div id="calories-progress" class="progress" style="width: 70%; background-color: #4caf50;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-label"><span>Protein</span><span id="protein-stats">120 / 150 g</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="protein-progress" class="progress" style="width: 80%; background-color: #f44336;">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 class="card-title"><i class="fa-solid fa-chart-pie"></i> Attendance Tracker</h2>
+                    <div class="chart-container pie-chart-container">
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                </section>
             </div>
-        </section>
-
-        <section class="card card-ai">
-            <h2 class="card-title"><i class="fa-solid fa-robot"></i> AI Suggestion</h2>
-            <p>"Based on your schedule, try a 20-minute walk after lunch to boost your energy."</p>
-        </section>
-
-        <section class="card">
-            <h2 class="card-title"><i class="fa-solid fa-calendar-day"></i> Upcoming Deadlines</h2>
-            <ul class="event-list">
-                <li><span>Sep 19</span> Project Submission</li>
-                <li><span>Sep 22</span> Mid-term Exam</li>
-            </ul>
-        </section>
-    </main>
-
-    <div class="modal" id="logoutModal">
-        <div class="modal-content">
-            <p>Are you sure you want to logout?</p>
-            <button id="confirmLogout">Yes</button>
-            <button id="cancelLogout">Cancel</button>
-        </div>
+        </main>
     </div>
 
-    <script src="/JavaScript/firebase-config.js" type="module"></script>
-    <script src="dashboard.js" type="module"></script>
+    <div class="modal-container" id="profileModal">
+    </div>
+
+    <button class="ai-chat-btn" id="ai-chat-btn" aria-label="Open AI Chat">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+    <div class="chat-popup" id="chat-popup">
+        <div class="chat-header">
+            <h3>AI Assistant</h3>
+            <button class="close-chat-btn" id="close-chat-btn">&times;</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message received">Hi! How can I help you be more productive today?</div>
+        </div>
+        <form class="chat-input-form" id="chat-form">
+            <input type="text" id="chat-input" placeholder="Ask me anything..." autocomplete="off">
+            <button type="submit" title="Send message"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    </div>
+
+    <script type="module" src="dashboard.js"></script>
 </body>
 
 </html>
