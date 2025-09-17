@@ -1,85 +1,244 @@
+/* --- Base & Background --- */
+* {
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
+    /* Recommended for modern UI */
+    margin: 0;
+    padding: 20px;
+    overflow: hidden;
+    /* Hide scrollbars caused by particles */
+}
+
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(-45deg, #000000, #16213e, #0f0c29, #302b63);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    z-index: -2;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* --- Glass Form Container --- */
+.container {
+    max-width: 420px;
+    width: 100%;
+}
+
+.form-container {
+    background: rgba(15, 12, 41, 0.6);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 35px;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #fff;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Header --- */
+.logo-header {
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 60px;
+    margin-bottom: 15px;
+    animation: float-logo 4s ease-in-out infinite;
+}
+
+@keyframes float-logo {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+#form-title {
+    font-size: 2em;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+#form-subtitle {
+    color: #a3a9ff;
     margin: 0;
 }
 
-.container {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
+/* --- Form Elements --- */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
 }
 
-h1 {
-    font-size: 2.5em;
-    color: #4a00e0;
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a3a9ff;
 }
 
 input {
-    display: block;
     width: 100%;
-    margin: 15px 0;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    padding: 14px 14px 14px 45px;
+    /* Space for icon */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
+input::placeholder {
+    color: #aaa;
+}
+
+input:focus {
+    outline: none;
+    border-color: #764ba2;
+    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.5);
+}
+
+/* --- Buttons --- */
 button {
-    background: #4a00e0;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
     width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-button:hover {
-    background: #6a00ff;
+#submit-btn {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: white;
 }
 
-#error-message {
-    color: red;
-    margin-top: 15px;
+#submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
 #google-login-btn {
-    background: #db4437;
-    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* login.css (Add this at the end) */
+#google-login-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
 
-/* ... (your existing CSS code is fine) ... */
-
-#auth-form {
+/* --- Separator & Toggle --- */
+.separator {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    /* Add some space between inputs and buttons */
+    align-items: center;
+    text-align: center;
+    color: #aaa;
+    margin: 25px 0;
 }
 
-/* Style for login/signup buttons inside the form */
-#auth-form button {
-    margin-top: 0;
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-#signup-btn {
-    background-color: #5a6268;
-    /* A different color for signup */
+.separator span {
+    padding: 0 10px;
 }
 
-#signup-btn:hover {
-    background-color: #6c757d;
+.toggle-auth {
+    margin-top: 25px;
+    color: #ccc;
 }
 
-/* Optional: Add a separator */
-p {
-    margin: 20px 0 10px;
-}/* login.css (Add this at the end) */
+.toggle-auth a {
+    color: #a3a9ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- Error & Loading --- */
+#error-message {
+    color: #ff8a8a;
+    margin-top: 15px;
+    min-height: 20px;
+    font-weight: 500;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
