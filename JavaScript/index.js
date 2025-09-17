@@ -1,55 +1,54 @@
-// Create floating particles
+// Function to create floating particles
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
-    const particleCount = 50;
+    if (!particlesContainer) return;
+    const particleCount = 40;
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.top = Math.random() * 100 + 'vh';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
         particlesContainer.appendChild(particle);
     }
 }
 
-// Scroll animations
+// Function to handle scroll-triggered fade-in animations
 function handleScrollAnimations() {
     const elements = document.querySelectorAll('.fade-in');
     const windowHeight = window.innerHeight;
 
     elements.forEach(element => {
         const elementTop = element.getBoundingClientRect().top;
-        if (elementTop < windowHeight - 100) {
+        if (elementTop < windowHeight - 80) {
             element.classList.add('visible');
         }
     });
 }
 
-// Smooth scrolling for CTA button
-document.querySelector('.cta-button').addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelector('#features').scrollIntoView({
-        behavior: 'smooth'
+// ✨--- NEW INTERACTIVE SPOTLIGHT EFFECT ---✨
+function setupBentoCardInteraction() {
+    const cards = document.querySelectorAll('.bento-card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--x', `${x}px`);
+            card.style.setProperty('--y', `${y}px`);
+        });
     });
-});
+}
 
-// Initialize
+
+// Initialize all functions when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function () {
     createParticles();
     handleScrollAnimations();
+    setupBentoCardInteraction();
 
+    // Listen for scroll events to trigger animations
     window.addEventListener('scroll', handleScrollAnimations);
-});
-
-// Add some interactive hover effects
-document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mouseenter', function () {
-        this.style.transform = 'translateY(-10px) rotateX(5deg)';
-    });
-
-    card.addEventListener('mouseleave', function () {
-        this.style.transform = 'translateY(0) rotateX(0)';
-    });
 });
