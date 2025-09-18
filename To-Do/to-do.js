@@ -29,15 +29,15 @@ const loadingState = document.getElementById('loading-state');
 const emptyState = document.getElementById('empty-state');
 
 // --- Auth State Observer ---
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        currentUser = user;
-        loadTasks(); // Initial load
-    } else {
-        alert("Please log in to manage your tasks.");
-        window.location.href = "/Login-signup/login.html";
-    }
-});
+// onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//         currentUser = user;
+//         loadTasks(); // Initial load
+//     } else {
+//         alert("Please log in to manage your tasks.");
+//         window.location.href = "/Login-signup/login.html";
+//     }
+// });
 
 // --- Main Function to Load Tasks ---
 function loadTasks() {
