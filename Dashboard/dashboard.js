@@ -1,135 +1,177 @@
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import {
-    getFirestore,
-    doc,
-    collection,
-    onSnapshot,
-    updateDoc,
-    query,
-    where,
-    orderBy,
-    serverTimestamp // Import serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { auth } from '/JavaScript/firebase-config.js';
 
-const db = getFirestore();
-let currentUser;
-
 // --- Authentication State Observer ---
+
 // onAuthStateChanged(auth, (user) => {
 //     if (user) {
-//         currentUser = user;
 //         initializeDashboard(user);
 //     } else {
+//         // If no user is logged in, redirect to the login page
 //         window.location.href = '/Login-signup/login.html';
 //     }
 // });
 
 function initializeDashboard(user) {
     // --- Setup UI Elements ---
+    const welcomeMessage = document.getElementById('welcome-message');
+    const profilePic = document.getElementById('profile-pic');
+
+    // Use user's display name or part of their email
     const displayName = user.displayName || user.email.split('@')[0];
-    document.getElementById('welcome-message').textContent = `Welcome, ${displayName}!`;
+    welcomeMessage.textContent = `Welcome, ${displayName}!`;
+
+    // Use user's profile picture if available
     if (user.photoURL) {
-        document.getElementById('profile-pic').src = user.photoURL;
+        profilePic.src = user.photoURL;
     }
 
-    // --- Initialize Widgets ---
-    setCurrentDate();
-    renderProductivityChart();
-    renderAttendanceChart();
-    setupTodoList(); // ✨ THIS FUNCTION IS NOW FULLY INTERACTIVE ✨
+    // --- Initialize Dashboard Widgets with Sample Data ---
+    renderProgressChart();
+    renderTaskChart(); // New function for pie chart
+    setupTodoList();
     setupUIEventListeners();
 }
 
-// --- Set Current Date ---
-function setCurrentDate() {
-    const dateElement = document.getElementById('current-date');
-    const today = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    dateElement.textContent = today.toLocaleDateString('en-US', options);
-}
-
-// --- Chart.js: Weekly Productivity Chart ---
-function renderProductivityChart() {
-    const ctx = document.getElementById('productivityChart').getContext('2d');
-    // ... (Chart code is unchanged)
-}
-
-// --- Chart.js: Attendance Chart ---
-function renderAttendanceChart() {
-    const ctx = document.getElementById('attendanceChart').getContext('2d');
-    // ... (Chart code is unchanged)
-}
-
-
-// --- ✅ ENHANCED: Interactive To-Do List from Firestore ---
-function setupTodoList() {
-    const todoList = document.getElementById('todo-list');
-    if (!currentUser) return;
-
-    // Step 1: Create a query to get ONLY incomplete tasks
-    const todosRef = collection(db, "users", currentUser.uid, "todos");
-    const q = query(todosRef, where("completed", "==", false), orderBy("createdAt", "desc"));
-
-    // Step 2: Listen for real-time updates
-    onSnapshot(q, (snapshot) => {
-        todoList.innerHTML = ''; // Clear list before re-rendering
-        if (snapshot.empty) {
-            todoList.innerHTML = '<p class="empty-task-message">No pending tasks. Great job!</p>';
-        }
-        snapshot.forEach(doc => {
-            const task = doc.data();
-            const li = document.createElement('li');
-            li.dataset.id = doc.id; // Store the document ID
-            li.innerHTML = `
-                <input type="checkbox" class="task-checkbox" id="task-${doc.id}">
-                <label for="task-${doc.id}">${task.text}</label>
-            `;
-            todoList.appendChild(li);
-
-            // Step 3: Add event listener to each new checkbox
-            const checkbox = li.querySelector('.task-checkbox');
-            checkbox.addEventListener('change', (e) => {
-                const taskId = e.target.closest('li').dataset.id;
-                // When checked, complete the task
-                if (e.target.checked) {
-                    completeTask(taskId, e.target.closest('li'));
+// --- Chart.js: Weekly Productivity (Line Chart) ---
+function renderProgressChart() {
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Tasks Completed',
+                // Sample data for a productive week
+                data: [5, 6, 4, 7, 8, 5, 9],
+                borderColor: '#a3a9ff',
+                backgroundColor: 'rgba(163, 169, 255, 0.2)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    ticks: { color: '#e0e0e0', font: { size: 12 } },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                x: {
+                    ticks: { color: '#e0e0e0', font: { size: 12 } },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
                 }
-            });
-        });
+            }
+        }
     });
 }
 
-// Step 4: Function to update task status in Firestore
-async function completeTask(taskId, listItemElement) {
-    if (!currentUser) return;
-    const taskRef = doc(db, "users", currentUser.uid, "todos", taskId);
-    try {
-        // Update the 'completed' field to true and set 'completedAt' timestamp
-        await updateDoc(taskRef, {
-            completed: true,
-            completedAt: serverTimestamp()
-        });
-
-        // Add a smooth animation before removing the task from the view
-        listItemElement.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        listItemElement.style.opacity = '0';
-        listItemElement.style.transform = 'translateX(20px)';
-
-        // The real-time listener will automatically remove it, but this animation provides great UX
-        setTimeout(() => {
-            // The onSnapshot listener handles the actual removal, so we don't strictly need this,
-            // but it's good practice for instant feedback.
-            listItemElement.remove();
-        }, 400);
-
-    } catch (error) {
-        console.error("Error completing task:", error);
-        alert("Couldn't update the task. Please try again.");
-    }
+// --- Chart.js: Task Overview (Pie Chart) ---
+function renderTaskChart() {
+    const ctx = document.getElementById('taskChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Completed', 'Pending'],
+            datasets: [{
+                label: 'Task Status',
+                // Sample data: 8 tasks completed, 4 pending
+                data: [8, 4],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.8)', // Completed - Green
+                    'rgba(255, 99, 132, 0.8)'  // Pending - Red
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e0e0e0',
+                        font: { size: 14 }
+                    }
+                }
+            }
+        }
+    });
 }
 
-// --- General UI Event Listeners ---
+
+// --- Interactive To-Do List with Sample Data ---
+function setupTodoList() {
+    const todoForm = document.getElementById('todo-form');
+    const todoInput = document.getElementById('todo-input');
+    const todoList = document.getElementById('todo-list');
+
+    // Clear existing list and add sample tasks
+    todoList.innerHTML = '';
+    const sampleTasks = [
+        "Finish project report",
+        "Go for a 30-minute run",
+        "Buy groceries for the week"
+    ];
+
+    sampleTasks.forEach(taskText => {
+        const li = document.createElement('li');
+        li.textContent = taskText;
+        todoList.appendChild(li);
+    });
+
+    // Add new tasks
+    todoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const taskText = todoInput.value.trim();
+        if (taskText !== '') {
+            const li = document.createElement('li');
+            li.textContent = taskText;
+            todoList.appendChild(li);
+            todoInput.value = '';
+        }
+    });
+}
+
+// --- General UI Event Listeners (Sidebar, Logout, etc.) ---
 function setupUIEventListeners() {
-    // ... (All other event listeners for sidebar, modals, chat are unchanged)
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const logoutBtn = document.getElementById('logout');
+    const logoutModal = document.getElementById('logoutModal');
+    const confirmLogout = document.getElementById('confirmLogout');
+    const cancelLogout = document.getElementById('cancelLogout');
+
+    // Toggle sidebar
+    hamburger.addEventListener('click', () => {
+        sidebar.style.left = '0';
+        overlay.style.display = 'block';
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.style.left = '-300px';
+        overlay.style.display = 'none';
+    });
+
+    // Logout modal
+    logoutBtn.addEventListener('click', () => {
+        logoutModal.style.display = 'flex';
+    });
+
+    cancelLogout.addEventListener('click', () => {
+        logoutModal.style.display = 'none';
+    });
+
+    confirmLogout.addEventListener('click', () => {
+        signOut(auth).catch(error => console.error('Sign out error', error));
+    });
 }

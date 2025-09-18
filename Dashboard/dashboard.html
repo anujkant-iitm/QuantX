@@ -39,8 +39,7 @@
         <main class="dashboard-content">
             <header class="dashboard-header">
                 <div class="header-left">
-                    <button class="hamburger" id="hamburger" title="Toggle menu"><i
-                            class="fa-solid fa-bars"></i></button>
+                    <button class="hamburger" id="hamburger" title="Toggle menu"><i class="fa-solid fa-bars"></i></button>
                     <div class="welcome-section">
                         <h1 id="welcome-message">Welcome, User!</h1>
                         <p id="current-date">Thursday, 18 September</p>
@@ -99,7 +98,10 @@
                 <section class="card">
                     <h2 class="card-title"><i class="fa-solid fa-chart-pie"></i> Attendance Tracker</h2>
                     <div class="chart-container pie-chart-container">
-                        <canvas id="attendanceChart"></canvas>
+                        <div class="attendance-chart">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                        <div class="attendance-percentage">Attendance: 98%</div>
                     </div>
                 </section>
             </div>

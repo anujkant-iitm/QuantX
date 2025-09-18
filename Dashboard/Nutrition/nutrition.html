@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-card">
+            <div class="profile-card">
+                <!-- <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">:root {
+     -->
+                <h1>Hi, Alex!</h1>
+                <p>Let's track your nutrition goals.</p>
+            </div>
+            
+            <div class="progress-card">
+                <h2>Daily Goal Progress</h2>
+                <div class="progress-circle">
+                    <svg viewBox="0 0 36 36">
+                        <path class="circle-bg"
+                            d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none" />
+                        <path class="circle-progress"
+                            stroke-dasharray="75, 100"
+                            d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none" />
+                    </svg>
+                    <div class="progress-text">75%</div>
+                </div>
+                <div style="text-align: center; font-size: 1.1rem;">
+                    2100 / 2800 kcal
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-card food-log-card">
+            <h2 class="log-header">
+                <span>Today's Food Log</span>
+                <img src="/CSS/images/White-logo.png" alt="QuantX_logo"  width="50">
+            </h2>
+            <div class="log-list">
+                <div class="log-item">
+                    <div>
+                        <h3>Morning Oats</h3>
+                        <p>Breakfast</p>
+                    </div>
+                    <div class="calories">450 kcal</div>
+                </div>
+                <div class="log-item">
+                    <div>
+                        <h3>Chicken Salad</h3>
+                        <p>Lunch</p>
+                    </div>
+                    <div class="calories">620 kcal</div>
+                </div>
+                <div class="log-item">
+                    <div>
+                        <h3>Protein Shake</h3>
+                        <p>Snack</p>
+                    </div>
+                    <div class="calories">250 kcal</div>
+                </div>
+                <div class="log-item">
+                    <div>
+                        <h3>Salmon with Asparagus</h3>
+                        <p>Dinner</p>
+                    </div>
+                    <div class="calories">780 kcal</div>
+                 </div>
+                <div class="add-food-section">
+    <div id="type-box">
+    <input type="text" id="food-name" placeholder="Food Name (egg, apple, milk)">
+    <input type="number" id="calorie-count" placeholder="Calories (155,100,42 in 100gm)">
+    </div>
+    <button id="add-log-btn">Add to Log</button>
+</div> 
+
+<!-- <div class="log-list" id="food-log-list">
+    </div>
+            </div>
+            <button class="add-button">+ Add Food</button>
+        </div>
+    </div> -->
+    <script src="script.js"></script>
+</body>
+</html>
