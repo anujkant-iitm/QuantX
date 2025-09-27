@@ -4,66 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Todo List - Firebase</title>
     <link rel="stylesheet" href="to-do.css">
-    <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
-    <link rel="stylesheet" href="/Designs/particle-bg.css">
-    <script src="to-do.js"></script>
-    <script src="/Designs/particle-bg.js" defer></script>
-
 </head>
 
 <body>
-    <div class="bg-animation"></div>
-    <div class="particles" id="particles"></div>
-    <div id="todoApp" class="todo-app-container">
-        <div class="todo-input-section">
-            <h2>📝 My Tasks</h2>
-            <div class="todo-input">
-                <input type="text" id="todoInput" placeholder="Add a new task..." maxlength="100">
-                <button id="addBtn" class="add-btn">Add Task</button>
-            </div>
+    <div class="container">
+        <header>
+            <h1>My Todo List</h1>
+            <p>Powered by Firebase Firestore</p>
+        </header>
+
+        <div class="todo-input">
+            <input type="text" id="todoInput" placeholder="Add a new task..." maxlength="100">
+            <button id="addBtn">Add Task</button>
         </div>
 
-        <div class="todo-filters">
+        <div class="filters">
             <button id="allBtn" class="filter-btn active">All</button>
             <button id="pendingBtn" class="filter-btn">Pending</button>
             <button id="completedBtn" class="filter-btn">Completed</button>
         </div>
 
-        <div class="todo-list-container">
-            <div id="todoLoading" class="loading-state">Loading tasks...</div>
-            <ul id="todoUL" class="todo-list"></ul>
-            <div id="todoEmptyState" class="empty-state" style="display: none;">
-                <div class="empty-icon">📝</div>
+        <div class="todo-list">
+            <div id="loading" class="loading">Loading tasks...</div>
+            <ul id="todoUL"></ul>
+            <div id="emptyState" class="empty-state" style="display: none;">
                 <p>No tasks yet. Add one above!</p>
             </div>
         </div>
 
-        <div class="todo-stats">
-            <div class="stat-item">
-                <span class="stat-number" id="totalTasks">0</span>
-                <span class="stat-label">Total</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="pendingTasks">0</span>
-                <span class="stat-label">Pending</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="completedTasks">0</span>
-                <span class="stat-label">Completed</span>
-            </div>
+        <div class="stats">
+            <span id="totalTasks">0</span> total,
+            <span id="pendingTasks">0</span> pending,
+            <span id="completedTasks">0</span> completed
         </div>
     </div>
 
-    <script type="module">
-        import { auth, db } from '/JavaScript/firebase-config.js';
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-        import { collection, addDoc, onSnapshot, orderBy, query, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-        // Initialize the To-Do App logic
-        initializeApp(auth, db, { onAuthStateChanged, collection, addDoc, onSnapshot, orderBy, query, doc, updateDoc, deleteDoc, serverTimestamp });
-    </script>
+    <!-- Custom JavaScript -->
+    <script src="JavaScript/firebase-config.js"></script>
+    <script src="to-do.js"></script>
 </body>
 
 </html>
