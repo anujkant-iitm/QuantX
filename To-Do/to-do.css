@@ -238,3 +238,21 @@ body {
     font-size: 14px;
     color: #aaa;
 }
+
+/* ... (previous styles) ... */
+
+.task-details {
+    flex: 1;
+}
+
+.timestamps {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.timestamp {
+    margin-right: 15px;
+}
+
+/* ... (rest of the styles) ... */

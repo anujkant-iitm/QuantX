@@ -4,7 +4,7 @@ import { auth } from '/JavaScript/firebase-config.js';
 
 const db = getFirestore();
 let currentUser = null;
-let currentFilter = 'all'; // 'all', 'pending', 'completed'
+let currentFilter = 'all';
 
 // UI Elements
 const todoForm = document.getElementById('todo-form');
@@ -68,9 +68,30 @@ function createTaskElement(task) {
     checkbox.className = 'todo-checkbox';
     checkbox.addEventListener('click', () => toggleTask(task.id, !task.completed));
 
+    const taskDetails = document.createElement('div');
+    taskDetails.className = 'task-details';
+
     const text = document.createElement('span');
     text.className = 'todo-text';
     text.textContent = task.text;
+
+    const timestamps = document.createElement('div');
+    timestamps.className = 'timestamps';
+
+    const createdAt = document.createElement('span');
+    createdAt.className = 'timestamp';
+    createdAt.textContent = `Created: ${formatTimestamp(task.createdAt)}`;
+    timestamps.appendChild(createdAt);
+
+    if (task.completed && task.completedAt) {
+        const completedAt = document.createElement('span');
+        completedAt.className = 'timestamp';
+        completedAt.textContent = `Completed: ${formatTimestamp(task.completedAt)}`;
+        timestamps.appendChild(completedAt);
+    }
+
+    taskDetails.appendChild(text);
+    taskDetails.appendChild(timestamps);
 
     const actions = document.createElement('div');
     actions.className = 'todo-actions';
@@ -82,7 +103,7 @@ function createTaskElement(task) {
 
     actions.appendChild(deleteBtn);
     li.appendChild(checkbox);
-    li.appendChild(text);
+    li.appendChild(taskDetails);
     li.appendChild(actions);
     todoUL.appendChild(li);
 }
@@ -107,7 +128,8 @@ todoForm.addEventListener('submit', (e) => {
         addDoc(todosRef, {
             text: text,
             completed: false,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            completedAt: null
         });
         todoInput.value = '';
     }
@@ -118,14 +140,17 @@ filterBtns.forEach(btn => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.filter;
-        loadTasks(); // This will re-fetch and re-render
+        loadTasks();
     });
 });
 
 // --- Firestore Actions ---
 function toggleTask(id, newStatus) {
     const taskRef = doc(db, "users", currentUser.uid, "todos", id);
-    updateDoc(taskRef, { completed: newStatus });
+    updateDoc(taskRef, {
+        completed: newStatus,
+        completedAt: newStatus ? serverTimestamp() : null
+    });
 }
 
 function deleteTask(id) {
@@ -133,4 +158,19 @@ function deleteTask(id) {
         const taskRef = doc(db, "users", currentUser.uid, "todos", id);
         deleteDoc(taskRef);
     }
+}
+
+// --- Utility Functions ---
+function formatTimestamp(timestamp) {
+    if (!timestamp || !timestamp.toDate) {
+        return '...';
+    }
+    const date = timestamp.toDate();
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
