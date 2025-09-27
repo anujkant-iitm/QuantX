@@ -24,7 +24,7 @@ onAuthStateChanged(auth, (user) => {
         currentUser = user;
         loadWorkoutHistory();
     } else {
-        window.location.href = "/Login-signup/login.html";
+        window.location.href = "/Login-signup/login.html"; //
     }
 });
 
@@ -45,7 +45,7 @@ function showSessionView() {
 }
 
 // --- Dashboard Logic ---
-async function loadWorkoutHistory() {
+function loadWorkoutHistory() {
     if (!currentUser) return;
     const workoutsRef = collection(db, "users", currentUser.uid, "workouts");
     onSnapshot(query(workoutsRef, orderBy("date", "desc")), (snapshot) => {
@@ -75,45 +75,62 @@ function renderHistoryItem(id, data) {
 
 // --- Workout Session Logic ---
 startWorkoutBtn.addEventListener('click', async () => {
-    const workoutsRef = collection(db, "users", currentUser.uid, "workouts");
-    const newWorkout = {
-        date: new Date().toISOString(),
-        exerciseCount: 0,
-        completed: false
-    };
-    const docRef = await addDoc(workoutsRef, newWorkout);
-    currentWorkoutId = docRef.id;
-    loadActiveWorkout();
-    showSessionView();
+    if (!currentUser) {
+        alert("Error: Not logged in!");
+        return;
+    }
+    try {
+        const workoutsRef = collection(db, "users", currentUser.uid, "workouts");
+        const newWorkout = {
+            date: new Date().toISOString(),
+            exerciseCount: 0,
+            completed: false
+        };
+        const docRef = await addDoc(workoutsRef, newWorkout);
+        currentWorkoutId = docRef.id;
+        loadActiveWorkout();
+        showSessionView();
+    } catch (error) {
+        console.error("Error starting workout:", error);
+        alert("Could not start workout. Check Firestore rules or console for details.");
+    }
 });
 
 finishWorkoutBtn.addEventListener('click', async () => {
-    // Update the final exercise count
-    const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
-    const workoutSnap = await getDoc(workoutDoc);
-    const exerciseCount = workoutSnap.data().exerciseCount || 0;
-    await updateDoc(workoutDoc, { completed: true, exerciseCount });
-    showDashboardView();
+    try {
+        const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
+        const workoutSnap = await getDoc(workoutDoc);
+        const exerciseCount = workoutSnap.data().exerciseCount || 0;
+        await updateDoc(workoutDoc, { completed: true, exerciseCount });
+        showDashboardView();
+    } catch (error) {
+        console.error("Error finishing workout:", error);
+        alert("Could not finish workout. Please try again.");
+    }
 });
 
 addExerciseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const exerciseName = exerciseNameInput.value.trim();
     if (exerciseName && currentWorkoutId) {
-        const exercisesRef = collection(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises");
-        await addDoc(exercisesRef, {
-            name: exerciseName,
-            sets: [],
-            createdAt: new Date()
-        });
+        try {
+            const exercisesRef = collection(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises");
+            await addDoc(exercisesRef, {
+                name: exerciseName,
+                sets: [],
+                createdAt: new Date()
+            });
 
-        // Update exercise count on the main workout doc
-        const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
-        const workoutSnap = await getDoc(workoutDoc);
-        const currentCount = workoutSnap.data().exerciseCount || 0;
-        await updateDoc(workoutDoc, { exerciseCount: currentCount + 1 });
+            const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
+            const workoutSnap = await getDoc(workoutDoc);
+            const currentCount = workoutSnap.data().exerciseCount || 0;
+            await updateDoc(workoutDoc, { exerciseCount: currentCount + 1 });
 
-        addExerciseForm.reset();
+            addExerciseForm.reset();
+        } catch (error) {
+            console.error("Error adding exercise:", error);
+            alert("Could not add exercise. Please try again.");
+        }
     }
 });
 
@@ -146,7 +163,6 @@ function renderExerciseLog(id, data) {
     exerciseList.appendChild(logDiv);
 }
 
-// --- Event Delegation for Adding/Deleting Sets/Exercises ---
 exerciseList.addEventListener('submit', async (e) => {
     if (e.target.classList.contains('add-set-form')) {
         e.preventDefault();
@@ -166,9 +182,10 @@ exerciseList.addEventListener('submit', async (e) => {
 
 exerciseList.addEventListener('click', async (e) => {
     const exerciseLog = e.target.closest('.exercise-log');
+    if (!exerciseLog) return;
+
     const exerciseId = exerciseLog.dataset.id;
 
-    // Handle Set Deletion
     if (e.target.classList.contains('delete-set-btn')) {
         const setItem = e.target.closest('.set-item');
         const setIndex = parseInt(setItem.dataset.index);
@@ -185,13 +202,11 @@ exerciseList.addEventListener('click', async (e) => {
         }
     }
 
-    // Handle Exercise Deletion
     if (e.target.closest('.delete-exercise-btn')) {
         if (confirm(`Are you sure you want to delete this exercise?`)) {
             const exerciseDocRef = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises", exerciseId);
             await deleteDoc(exerciseDocRef);
 
-            // Decrement exercise count
             const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
             const workoutSnap = await getDoc(workoutDoc);
             const currentCount = workoutSnap.data().exerciseCount || 0;
