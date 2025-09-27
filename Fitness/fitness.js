@@ -1,216 +1,176 @@
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, collection, doc, addDoc, onSnapshot, query, orderBy, getDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-import { auth } from '/JavaScript/firebase-config.js';
-
-const db = getFirestore();
+// Ensure Firebase is initialized
+const auth = firebase.auth();
+const db = firebase.firestore();
 let currentUser = null;
-let currentWorkoutId = null; // To track the active workout session
 
-// DOM Elements
-const dashboardView = document.getElementById('gym-dashboard-view');
-const sessionView = document.getElementById('workout-session-view');
-const startWorkoutBtn = document.getElementById('start-workout-btn');
-const finishWorkoutBtn = document.getElementById('finish-workout-btn');
-const workoutHistoryList = document.getElementById('workout-history-list');
-const noHistoryState = document.getElementById('no-history-state');
-const workoutDateEl = document.getElementById('workout-date');
-const exerciseList = document.getElementById('exercise-list');
-const addExerciseForm = document.getElementById('add-exercise-form');
-const exerciseNameInput = document.getElementById('exercise-name-input');
+// UI Elements
+const exerciseTypeSelect = document.getElementById('exerciseType');
+const exerciseNameInput = document.getElementById('exerciseName');
+const dynamicFieldsContainer = document.getElementById('dynamic-fields');
+const logWorkoutBtn = document.getElementById('logWorkoutBtn');
+const historyList = document.getElementById('workout-history-list');
+const historyLoading = document.getElementById('history-loading');
+const historyEmpty = document.getElementById('history-empty');
 
-// --- Authentication ---
-onAuthStateChanged(auth, (user) => {
+// --- AUTHENTICATION ---
+auth.onAuthStateChanged(user => {
     if (user) {
         currentUser = user;
+        updateForm(); // Initial form setup
         loadWorkoutHistory();
     } else {
-        window.location.href = "/Login-signup/login.html"; //
+        alert("Please log in to track your fitness.");
+        window.location.href = "/Login-signup/login.html";
     }
 });
 
-// --- View Switching ---
-function showDashboardView() {
-    sessionView.classList.add('hidden');
-    dashboardView.classList.remove('hidden');
-    currentWorkoutId = null;
-    exerciseList.innerHTML = '';
+// --- DYNAMIC FORM LOGIC ---
+exerciseTypeSelect.addEventListener('change', updateForm);
+
+function updateForm() {
+    const type = exerciseTypeSelect.value;
+    dynamicFieldsContainer.innerHTML = ''; // Clear previous fields
+
+    if (type === 'strength') {
+        dynamicFieldsContainer.innerHTML = `
+            <div id="sets-container">
+                <div class="set-group">
+                    <input type="number" class="reps-input" placeholder="Reps">
+                    <span>x</span>
+                    <input type="number" class="weight-input" placeholder="Weight (kg)">
+                </div>
+            </div>
+            <button type="button" id="addSetBtn">+ Add Set</button>
+        `;
+        document.getElementById('addSetBtn').addEventListener('click', addSet);
+    } else if (type === 'cardio') {
+        dynamicFieldsContainer.innerHTML = `
+            <div class="input-group">
+                <label>Distance</label>
+                <input type="number" id="distance" placeholder="e.g., 5">
+            </div>
+            <div class="input-group">
+                <label>Duration (minutes)</label>
+                <input type="number" id="duration" placeholder="e.g., 30">
+            </div>
+        `;
+    } else if (type === 'bodyweight') {
+        dynamicFieldsContainer.innerHTML = `
+             <div id="sets-container">
+                <div class="set-group">
+                    <input type="number" class="reps-input" placeholder="Reps">
+                </div>
+            </div>
+            <button type="button" id="addSetBtn">+ Add Set</button>
+        `;
+        document.getElementById('addSetBtn').addEventListener('click', addSet);
+    }
 }
 
-function showSessionView() {
-    dashboardView.classList.add('hidden');
-    sessionView.classList.remove('hidden');
-    workoutDateEl.textContent = new Date().toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
+function addSet() {
+    const type = exerciseTypeSelect.value;
+    const setsContainer = document.getElementById('sets-container');
+    const setGroup = document.createElement('div');
+    setGroup.classList.add('set-group');
+
+    if (type === 'strength') {
+        setGroup.innerHTML = `
+            <input type="number" class="reps-input" placeholder="Reps">
+            <span>x</span>
+            <input type="number" class="weight-input" placeholder="Weight (kg)">
+        `;
+    } else { // bodyweight
+        setGroup.innerHTML = `<input type="number" class="reps-input" placeholder="Reps">`;
+    }
+    setsContainer.appendChild(setGroup);
 }
 
-// --- Dashboard Logic ---
-function loadWorkoutHistory() {
+
+// --- SAVE WORKOUT DATA ---
+logWorkoutBtn.addEventListener('click', () => {
     if (!currentUser) return;
-    const workoutsRef = collection(db, "users", currentUser.uid, "workouts");
-    onSnapshot(query(workoutsRef, orderBy("date", "desc")), (snapshot) => {
-        workoutHistoryList.innerHTML = '';
-        if (snapshot.empty) {
-            noHistoryState.style.display = 'block';
-        } else {
-            noHistoryState.style.display = 'none';
-            snapshot.forEach(doc => renderHistoryItem(doc.id, doc.data()));
-        }
-    });
-}
 
-function renderHistoryItem(id, data) {
-    const item = document.createElement('div');
-    item.className = 'history-item';
-    item.innerHTML = `
-        <div>
-            <div class="history-item-date">${new Date(data.date).toLocaleDateString()}</div>
-            <div class="history-item-summary">${data.exerciseCount || 0} exercises</div>
-        </div>
-        <i class="fas fa-chevron-right"></i>
-    `;
-    // TODO: Add click event to view full workout details
-    workoutHistoryList.appendChild(item);
-}
+    const workoutData = {
+        exerciseName: exerciseNameInput.value.trim(),
+        type: exerciseTypeSelect.value,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-// --- Workout Session Logic ---
-startWorkoutBtn.addEventListener('click', async () => {
-    if (!currentUser) {
-        alert("Error: Not logged in!");
+    if (!workoutData.exerciseName) {
+        alert("Please enter an exercise name.");
         return;
     }
-    try {
-        const workoutsRef = collection(db, "users", currentUser.uid, "workouts");
-        const newWorkout = {
-            date: new Date().toISOString(),
-            exerciseCount: 0,
-            completed: false
-        };
-        const docRef = await addDoc(workoutsRef, newWorkout);
-        currentWorkoutId = docRef.id;
-        loadActiveWorkout();
-        showSessionView();
-    } catch (error) {
-        console.error("Error starting workout:", error);
-        alert("Could not start workout. Check Firestore rules or console for details.");
+
+    if (workoutData.type === 'strength' || workoutData.type === 'bodyweight') {
+        workoutData.sets = [];
+        const setGroups = dynamicFieldsContainer.querySelectorAll('.set-group');
+        setGroups.forEach(set => {
+            const reps = set.querySelector('.reps-input').value;
+            const weight = workoutData.type === 'strength' ? set.querySelector('.weight-input').value : null;
+
+            if (reps) {
+                const setData = { reps: Number(reps) };
+                if (weight) setData.weight = Number(weight);
+                workoutData.sets.push(setData);
+            }
+        });
+    } else if (workoutData.type === 'cardio') {
+        workoutData.distance = Number(document.getElementById('distance').value);
+        workoutData.duration = Number(document.getElementById('duration').value);
     }
+
+    // Save to Firestore
+    db.collection('users').doc(currentUser.uid).collection('fitnessLogs').add(workoutData)
+        .then(() => {
+            console.log("Workout logged successfully!");
+            exerciseNameInput.value = '';
+            updateForm(); // Reset form
+        }).catch(error => {
+            console.error("Error logging workout: ", error);
+        });
 });
 
-finishWorkoutBtn.addEventListener('click', async () => {
-    try {
-        const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
-        const workoutSnap = await getDoc(workoutDoc);
-        const exerciseCount = workoutSnap.data().exerciseCount || 0;
-        await updateDoc(workoutDoc, { completed: true, exerciseCount });
-        showDashboardView();
-    } catch (error) {
-        console.error("Error finishing workout:", error);
-        alert("Could not finish workout. Please try again.");
-    }
-});
 
-addExerciseForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const exerciseName = exerciseNameInput.value.trim();
-    if (exerciseName && currentWorkoutId) {
-        try {
-            const exercisesRef = collection(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises");
-            await addDoc(exercisesRef, {
-                name: exerciseName,
-                sets: [],
-                createdAt: new Date()
-            });
+// --- LOAD WORKOUT HISTORY ---
+function loadWorkoutHistory() {
+    if (!currentUser) return;
 
-            const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
-            const workoutSnap = await getDoc(workoutDoc);
-            const currentCount = workoutSnap.data().exerciseCount || 0;
-            await updateDoc(workoutDoc, { exerciseCount: currentCount + 1 });
+    const historyRef = db.collection('users').doc(currentUser.uid).collection('fitnessLogs').orderBy('createdAt', 'desc');
 
-            addExerciseForm.reset();
-        } catch (error) {
-            console.error("Error adding exercise:", error);
-            alert("Could not add exercise. Please try again.");
+    historyRef.onSnapshot(snapshot => {
+        historyLoading.style.display = 'none';
+        if (snapshot.empty) {
+            historyEmpty.style.display = 'block';
+            historyList.innerHTML = '';
+            return;
         }
-    }
-});
 
-function loadActiveWorkout() {
-    const exercisesRef = collection(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises");
-    onSnapshot(query(exercisesRef, orderBy("createdAt")), (snapshot) => {
-        exerciseList.innerHTML = '';
-        snapshot.forEach(doc => renderExerciseLog(doc.id, doc.data()));
+        historyEmpty.style.display = 'none';
+        historyList.innerHTML = '';
+        snapshot.forEach(doc => {
+            const workout = doc.data();
+            const li = document.createElement('li');
+            li.classList.add('history-item');
+
+            const date = workout.createdAt ? workout.createdAt.toDate().toLocaleDateString() : 'No date';
+
+            let detailsHtml = '';
+            if (workout.type === 'strength') {
+                detailsHtml = workout.sets.map(s => `<li>${s.reps} reps at ${s.weight} kg</li>`).join('');
+            } else if (workout.type === 'bodyweight') {
+                detailsHtml = workout.sets.map(s => `<li>${s.reps} reps</li>`).join('');
+            } else if (workout.type === 'cardio') {
+                detailsHtml = `<li>Distance: ${workout.distance} km</li><li>Duration: ${workout.duration} min</li>`;
+            }
+
+            li.innerHTML = `
+                <div class="history-item-header">
+                    <span>${workout.exerciseName} (${workout.type})</span>
+                    <small>${date}</small>
+                </div>
+                <ul class="history-item-details">${detailsHtml}</ul>
+            `;
+            historyList.appendChild(li);
+        });
     });
 }
-
-function renderExerciseLog(id, data) {
-    const logDiv = document.createElement('div');
-    logDiv.className = 'exercise-log';
-    logDiv.dataset.id = id;
-    logDiv.innerHTML = `
-        <div class="exercise-log-header">
-            <h4>${data.name}</h4>
-            <button class="delete-exercise-btn"><i class="fas fa-trash"></i></button>
-        </div>
-        <ul class="set-list">
-            ${data.sets.map((set, index) => `<li class="set-item" data-index="${index}"><span>Set ${index + 1}: ${set.weight} kg x ${set.reps} reps</span><span class="delete-set-btn">×</span></li>`).join('')}
-        </ul>
-        <form class="add-set-form">
-            <input type="number" class="weight-input" placeholder="Weight (kg)" required>
-            <input type="number" class="reps-input" placeholder="Reps" required>
-            <button type="submit">Add Set</button>
-        </form>
-    `;
-    exerciseList.appendChild(logDiv);
-}
-
-exerciseList.addEventListener('submit', async (e) => {
-    if (e.target.classList.contains('add-set-form')) {
-        e.preventDefault();
-        const exerciseId = e.target.closest('.exercise-log').dataset.id;
-        const weight = e.target.querySelector('.weight-input').value;
-        const reps = e.target.querySelector('.reps-input').value;
-
-        if (weight && reps) {
-            const exerciseDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises", exerciseId);
-            await updateDoc(exerciseDoc, {
-                sets: arrayUnion({ weight: parseFloat(weight), reps: parseInt(reps) })
-            });
-            e.target.reset();
-        }
-    }
-});
-
-exerciseList.addEventListener('click', async (e) => {
-    const exerciseLog = e.target.closest('.exercise-log');
-    if (!exerciseLog) return;
-
-    const exerciseId = exerciseLog.dataset.id;
-
-    if (e.target.classList.contains('delete-set-btn')) {
-        const setItem = e.target.closest('.set-item');
-        const setIndex = parseInt(setItem.dataset.index);
-
-        const exerciseDocRef = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises", exerciseId);
-        const exerciseSnap = await getDoc(exerciseDocRef);
-        const sets = exerciseSnap.data().sets;
-        const setToRemove = sets[setIndex];
-
-        if (setToRemove) {
-            await updateDoc(exerciseDocRef, {
-                sets: arrayRemove(setToRemove)
-            });
-        }
-    }
-
-    if (e.target.closest('.delete-exercise-btn')) {
-        if (confirm(`Are you sure you want to delete this exercise?`)) {
-            const exerciseDocRef = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId, "exercises", exerciseId);
-            await deleteDoc(exerciseDocRef);
-
-            const workoutDoc = doc(db, "users", currentUser.uid, "workouts", currentWorkoutId);
-            const workoutSnap = await getDoc(workoutDoc);
-            const currentCount = workoutSnap.data().exerciseCount || 0;
-            await updateDoc(workoutDoc, { exerciseCount: Math.max(0, currentCount - 1) });
-        }
-    }
-});
