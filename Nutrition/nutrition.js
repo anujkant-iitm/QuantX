@@ -28,14 +28,14 @@ const closeHistoryBtn = document.getElementById('close-history-btn');
 const historyContent = document.getElementById('history-content');
 
 // --- Authentication ---
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        currentUser = user;
-        loadDailyData();
-    } else {
-        window.location.href = "/Login-signup/login.html";
-    }
-});
+// onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//         currentUser = user;
+//         loadDailyData();
+//     } else {
+//         window.location.href = "/Login-signup/login.html";
+//     }
+// });
 
 // --- Real-time Calorie Calculation in Form ---
 function calculateKcal() {

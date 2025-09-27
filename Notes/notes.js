@@ -20,14 +20,14 @@ const createdDateEl = document.getElementById('created-date');
 const editedDateEl = document.getElementById('edited-date');
 
 // --- Authentication ---
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        currentUser = user;
-        loadNotes();
-    } else {
-        window.location.href = "/Login-signup/login.html";
-    }
-});
+// onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//         currentUser = user;
+//         loadNotes();
+//     } else {
+//         window.location.href = "/Login-signup/login.html";
+//     }
+// });
 
 // --- View Switching ---
 function showGridView() {
