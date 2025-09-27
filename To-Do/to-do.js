@@ -1,125 +1,109 @@
-function initializeApp(auth, db, firebase) {
-    let currentUser = null;
+// To-Do/to-do.js
 
-    // UI elements
-    const todoInput = document.getElementById("todoInput");
-    const addBtn = document.getElementById("addBtn");
-    const todoUL = document.getElementById("todoUL");
-    const totalTasks = document.getElementById("totalTasks");
-    const pendingTasks = document.getElementById("pendingTasks");
-    const completedTasks = document.getElementById("completedTasks");
-    const loadingState = document.getElementById("todoLoading");
-    const emptyState = document.getElementById("todoEmptyState");
+// Import services from your central config file
+import { auth, db } from '/JavaScript/firebase-config.js';
 
-    // 🔹 Auth State Change (check if user is logged in)
-    firebase.onAuthStateChanged(auth, (user) => {
-        if (user) {
-            currentUser = user;
-            console.log("User logged in:", user.uid);
-            loadTasks();
+// Import necessary functions from Firebase SDK
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { collection, addDoc, onSnapshot, orderBy, query, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+// --- UI Elements ---
+const todoInput = document.getElementById("todoInput");
+const addBtn = document.getElementById("addBtn");
+const todoUL = document.getElementById("todoUL");
+const loadingState = document.getElementById("todoLoading");
+const emptyState = document.getElementById("todoEmptyState");
+
+let currentUser = null;
+
+// --- Authentication Observer ---
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+        loadTasks();
+    } else {
+        // Not logged in, redirect to login page
+        window.location.href = "/Login-signup/login.html";
+    }
+});
+
+// --- Load Tasks from Firestore ---
+const loadTasks = () => {
+    if (!currentUser) return;
+
+    const todosRef = collection(db, "users", currentUser.uid, "todos");
+    const q = query(todosRef, orderBy("createdAt", "desc"));
+
+    onSnapshot(q, (snapshot) => {
+        loadingState.style.display = "none";
+        todoUL.innerHTML = ""; // Clear list before rendering
+
+        if (snapshot.empty) {
+            emptyState.style.display = "block";
         } else {
-            alert("Please log in first!");
-            window.location.href = "/Login-signup/login.html"; // redirect to login if not signed in
+            emptyState.style.display = "none";
+            snapshot.forEach(doc => {
+                renderTask(doc.id, doc.data());
+            });
         }
     });
+};
 
-    // 🔹 Load tasks for the logged-in user
-    function loadTasks() {
-        if (!currentUser) return;
+// --- Render a single task item ---
+const renderTask = (id, taskData) => {
+    const li = document.createElement("li");
+    li.className = `todo-item ${taskData.completed ? "completed" : ""}`;
+    li.setAttribute('data-id', id);
 
-        const todosRef = firebase.collection(db, "users", currentUser.uid, "todos");
-        const q = firebase.query(todosRef, firebase.orderBy("createdAt", "desc"));
+    li.innerHTML = `
+        <div class="todo-checkbox ${taskData.completed ? 'checked' : ''}"></div>
+        <span class="todo-text">${taskData.text}</span>
+        <button class="delete-btn">✕</button>
+    `;
+    todoUL.appendChild(li);
+};
 
-        firebase.onSnapshot(q, (snapshot) => {
-            todoUL.innerHTML = "";
-            let total = 0, pending = 0, completed = 0;
+// --- Add a new Task ---
+const addTask = async () => {
+    const text = todoInput.value.trim();
+    if (text === "" || !currentUser) return;
 
-            if (snapshot.empty) {
-                loadingState.style.display = "none";
-                emptyState.style.display = "block";
-                updateStats(0, 0, 0); // Reset stats
-                return;
-            }
-
-            snapshot.forEach((doc) => {
-                const task = doc.data();
-                total++;
-                if (task.completed) completed++; else pending++;
-
-                const li = document.createElement("li");
-                li.className = "todo-item " + (task.completed ? "completed" : "");
-                li.innerHTML = `
-                    <div class="todo-checkbox ${task.completed ? 'checked' : ''}" data-id="${doc.id}" data-status="${task.completed}"></div>
-                    <span class="todo-text">${task.text}</span>
-                    <button class="delete-btn" data-id="${doc.id}">Delete</button>
-                `;
-                todoUL.appendChild(li);
-            });
-
-            updateStats(total, pending, completed);
-            loadingState.style.display = "none";
-            emptyState.style.display = total === 0 ? "block" : "none";
+    try {
+        await addDoc(collection(db, "users", currentUser.uid, "todos"), {
+            text: text,
+            completed: false,
+            createdAt: serverTimestamp()
         });
+        todoInput.value = ""; // Clear input after adding
+    } catch (error) {
+        console.error("Error adding document: ", error);
+    }
+};
+
+// --- Handle Clicks on Task List (Toggle/Delete) ---
+const handleListClick = async (e) => {
+    const target = e.target;
+    const taskItem = target.closest('.todo-item');
+    if (!taskItem || !currentUser) return;
+
+    const docId = taskItem.getAttribute('data-id');
+    const taskRef = doc(db, "users", currentUser.uid, "todos", docId);
+
+    if (target.matches('.todo-checkbox')) {
+        const isCompleted = taskItem.classList.contains('completed');
+        await updateDoc(taskRef, { completed: !isCompleted });
     }
 
-    function updateStats(total, pending, completed) {
-        totalTasks.textContent = total;
-        pendingTasks.textContent = pending;
-        completedTasks.textContent = completed;
+    if (target.matches('.delete-btn')) {
+        await deleteDoc(taskRef);
     }
+};
 
-
-    // 🔹 Add Task
-    addBtn.addEventListener("click", async () => {
-        const text = todoInput.value.trim();
-        if (text === "" || !currentUser) return;
-
-        try {
-            const todosRef = firebase.collection(db, "users", currentUser.uid, "todos");
-            await firebase.addDoc(todosRef, {
-                text: text,
-                completed: false,
-                createdAt: firebase.serverTimestamp()
-            });
-            todoInput.value = "";
-        } catch (error) {
-            console.error("Error adding task: ", error);
-        }
-    });
-
-    // 🔹 Event Delegation for Toggle and Delete
-    todoUL.addEventListener('click', (e) => {
-        if (e.target.matches('.todo-checkbox')) {
-            const id = e.target.dataset.id;
-            const currentStatus = e.target.dataset.status === 'true';
-            toggleTask(id, !currentStatus);
-        }
-        if (e.target.matches('.delete-btn')) {
-            const id = e.target.dataset.id;
-            deleteTask(id);
-        }
-    });
-
-
-    // 🔹 Toggle Task Completion
-    async function toggleTask(id, newStatus) {
-        if (!currentUser) return;
-        const taskRef = firebase.doc(db, "users", currentUser.uid, "todos", id);
-        try {
-            await firebase.updateDoc(taskRef, { completed: newStatus });
-        } catch (error) {
-            console.error("Error toggling task: ", error);
-        }
+// --- Event Listeners ---
+addBtn.addEventListener("click", addTask);
+todoInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        addTask();
     }
-
-    // 🔹 Delete Task
-    async function deleteTask(id) {
-        if (!currentUser) return;
-        const taskRef = firebase.doc(db, "users", currentUser.uid, "todos", id);
-        try {
-            await firebase.deleteDoc(taskRef);
-        } catch (error) {
-            console.error("Error deleting task: ", error);
-        }
-    }
-}
+});
+todoUL.addEventListener("click", handleListClick);
