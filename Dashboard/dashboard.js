@@ -3,14 +3,14 @@ import { auth } from '/JavaScript/firebase-config.js';
 
 // --- Authentication State Observer ---
 
-// onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//         initializeDashboard(user);
-//     } else {
-//         // If no user is logged in, redirect to the login page
-//         window.location.href = '/Login-signup/login.html';
-//     }
-// });
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        initializeDashboard(user);
+    } else {
+        // If no user is logged in, redirect to the login page
+        window.location.href = '/Login-signup/login.html';
+    }
+});
 
 function initializeDashboard(user) {
     // --- Setup UI Elements ---

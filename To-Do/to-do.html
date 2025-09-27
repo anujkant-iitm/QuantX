@@ -4,57 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantX - Task Manager</title>
+    <title>Document</title>
     <link rel="stylesheet" href="to-do.css">
     <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/Designs/particle-bg.css">
+    <script src="to-do.js"></script>
+    <script src="/Designs/particle-bg.js" defer></script>
+
 </head>
 
 <body>
     <div class="bg-animation"></div>
     <div class="particles" id="particles"></div>
-
-    <div class="app-container">
-        <header class="app-header">
-            <a href="/Dashboard/dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to
-                Dashboard</a>
-            <h1><i class="fa-solid fa-list-check"></i> My Tasks</h1>
-        </header>
-
-        <div class="todo-app-card">
-            <div class="todo-input-section">
-                <form id="add-task-form">
-                    <input type="text" id="task-input" placeholder="What's your next priority?" maxlength="100"
-                        required>
-                    <button type="submit" id="add-task-btn">
-                        <span class="btn-text">Add Task</span>
-                        <span class="spinner" style="display: none;"></span>
-                    </button>
-                </form>
+    <div id="todoApp" class="todo-app-container">
+        <div class="todo-input-section">
+            <h2>📝 My Tasks</h2>
+            <div class="todo-input">
+                <input type="text" id="todoInput" placeholder="Add a new task..." maxlength="100">
+                <button id="addBtn" class="add-btn">Add Task</button>
             </div>
+        </div>
 
-            <div class="todo-filters">
-                <button id="all-btn" class="filter-btn active" data-filter="all">All</button>
-                <button id="pending-btn" class="filter-btn" data-filter="pending">Pending</button>
-                <button id="completed-btn" class="filter-btn" data-filter="completed">Completed</button>
+        <div class="todo-filters">
+            <button id="allBtn" class="filter-btn active">All</button>
+            <button id="pendingBtn" class="filter-btn">Pending</button>
+            <button id="completedBtn" class="filter-btn">Completed</button>
+        </div>
+
+        <div class="todo-list-container">
+            <div id="todoLoading" class="loading-state">Loading tasks...</div>
+            <ul id="todoUL" class="todo-list"></ul>
+            <div id="todoEmptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📝</div>
+                <p>No tasks yet. Add one above!</p>
             </div>
+        </div>
 
-            <div class="todo-list-container">
-                <div id="loading-state" class="state-message">
-                    <div class="spinner"></div> Loading tasks...
-                </div>
-                <ul id="task-list" class="todo-list"></ul>
-                <div id="empty-state" class="state-message" style="display: none;">
-                    <div class="empty-icon">🎉</div>
-                    <p>No tasks here. You're all clear!</p>
-                </div>
+        <div class="todo-stats">
+            <div class="stat-item">
+                <span class="stat-number" id="totalTasks">0</span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="pendingTasks">0</span>
+                <span class="stat-label">Pending</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="completedTasks">0</span>
+                <span class="stat-label">Completed</span>
             </div>
         </div>
     </div>
 
-    <script type="module" src="/JavaScript/firebase-config.js"></script>
-    <script type="module" src="to-do.js"></script>
-    <script src="/Designs/particle-bg.js" defer></script>
+    <script type="module">
+        import { auth, db } from '/JavaScript/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { collection, addDoc, onSnapshot, orderBy, query, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        // Initialize the To-Do App logic
+        initializeApp(auth, db, { onAuthStateChanged, collection, addDoc, onSnapshot, orderBy, query, doc, updateDoc, deleteDoc, serverTimestamp });
+    </script>
 </body>
 
 </html>
