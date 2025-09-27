@@ -1,94 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>QuantX - Nutrition Tracker</title>
+    <link rel="stylesheet" href="nutrition.css">
+    <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body>
-    <div class="container">
-        <div class="main-card">
-            <div class="profile-card">
-                <!-- <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">:root {
-     -->
-                <h1>Hi, Alex!</h1>
-                <p>Let's track your nutrition goals.</p>
-            </div>
-            
-            <div class="progress-card">
-                <h2>Daily Goal Progress</h2>
-                <div class="progress-circle">
-                    <svg viewBox="0 0 36 36">
-                        <path class="circle-bg"
-                            d="M18 2.0845
-                                a 15.9155 15.9155 0 0 1 0 31.831
-                                a 15.9155 15.9155 0 0 1 0 -31.831"
-                            fill="none" />
-                        <path class="circle-progress"
-                            stroke-dasharray="75, 100"
-                            d="M18 2.0845
-                                a 15.9155 15.9155 0 0 1 0 31.831
-                                a 15.9155 15.9155 0 0 1 0 -31.831"
-                            fill="none" />
-                    </svg>
-                    <div class="progress-text">75%</div>
-                </div>
-                <div style="text-align: center; font-size: 1.1rem;">
-                    2100 / 2800 kcal
-                </div>
-            </div>
-        </div>
-        
-        <div class="main-card food-log-card">
-            <h2 class="log-header">
-                <span>Today's Food Log</span>
-                <img src="/CSS/images/White-logo.png" alt="QuantX_logo"  width="50">
-            </h2>
-            <div class="log-list">
-                <div class="log-item">
-                    <div>
-                        <h3>Morning Oats</h3>
-                        <p>Breakfast</p>
-                    </div>
-                    <div class="calories">450 kcal</div>
-                </div>
-                <div class="log-item">
-                    <div>
-                        <h3>Chicken Salad</h3>
-                        <p>Lunch</p>
-                    </div>
-                    <div class="calories">620 kcal</div>
-                </div>
-                <div class="log-item">
-                    <div>
-                        <h3>Protein Shake</h3>
-                        <p>Snack</p>
-                    </div>
-                    <div class="calories">250 kcal</div>
-                </div>
-                <div class="log-item">
-                    <div>
-                        <h3>Salmon with Asparagus</h3>
-                        <p>Dinner</p>
-                    </div>
-                    <div class="calories">780 kcal</div>
-                 </div>
-                <div class="add-food-section">
-    <div id="type-box">
-    <input type="text" id="food-name" placeholder="Food Name (egg, apple, milk)">
-    <input type="number" id="calorie-count" placeholder="Calories (155,100,42 in 100gm)">
-    </div>
-    <button id="add-log-btn">Add to Log</button>
-</div> 
 
-<!-- <div class="log-list" id="food-log-list">
-    </div>
+<body>
+    <div class="bg-animation"></div>
+
+    <div class="nutrition-app-container">
+        <header class="daily-summary">
+            <h2><i class="fas fa-chart-pie"></i> Today's Intake</h2>
+            <div class="macros-summary">
+                <div class="summary-item calories">
+                    <span id="total-calories">0</span>
+                    <label>KCal</label>
+                </div>
+                <div class="summary-item">
+                    <span id="total-protein">0g</span>
+                    <label>Protein</label>
+                </div>
+                <div class="summary-item">
+                    <span id="total-carbs">0g</span>
+                    <label>Carbs</label>
+                </div>
+                <div class="summary-item">
+                    <span id="total-fat">0g</span>
+                    <label>Fat</label>
+                </div>
             </div>
-            <button class="add-button">+ Add Food</button>
+        </header>
+
+        <section class="add-food-section">
+            <h3><i class="fas fa-plus-circle"></i> Add Food Item</h3>
+            <form id="food-form">
+                <input type="text" id="foodName" placeholder="Food Name" required>
+                <div class="macro-inputs">
+                    <input type="number" id="protein" placeholder="Protein (g)" min="0" required>
+                    <input type="number" id="carbs" placeholder="Carbs (g)" min="0" required>
+                    <input type="number" id="fat" placeholder="Fat (g)" min="0" required>
+                    <div class="calculated-kcal">
+                        <span id="calculated-calories">0</span> KCal
+                    </div>
+                </div>
+                <button type="submit">Add Food</button>
+            </form>
+        </section>
+
+        <section class="food-list-section">
+            <div class="list-header">
+                <h3>Today's Log</h3>
+                <button id="history-btn"><i class="fas fa-history"></i> View History</button>
+            </div>
+            <ul id="food-list">
+            </ul>
+            <div id="empty-log-state" class="empty-state">
+                <i class="fas fa-utensils"></i>
+                <p>Your food log for today is empty.</p>
+            </div>
+        </section>
+    </div>
+
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="close-history-btn">&times;</button>
+            <h2><i class="fas fa-calendar-alt"></i> Nutrition History</h2>
+            <div id="history-content">
+            </div>
         </div>
-    </div> -->
-    <script src="script.js"></script>
+    </div>
+
+    <script type="module" src="/JavaScript/firebase-config.js"></script>
+    <script type="module" src="nutrition.js"></script>
 </body>
+
 </html>
