@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantX - Gym Tracker</title>
+    <title>QuantX - Fitness Tracker</title>
     <link rel="stylesheet" href="fitness.css">
     <link rel="icon" type="image/x-icon" href="/CSS/images/QuantX_logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -13,45 +13,45 @@
 <body>
     <div class="bg-animation"></div>
 
-    <div class="gym-app-container">
-        <div id="gym-dashboard-view">
-            <header class="app-header">
-                <h2><i class="fas fa-dumbbell"></i> Gym Tracker</h2>
-                <button id="start-workout-btn" class="primary-btn"><i class="fas fa-plus"></i> Start New
-                    Workout</button>
-            </header>
-            <main class="history-section">
-                <h3><i class="fas fa-history"></i> Workout History</h3>
-                <div id="workout-history-list">
-                </div>
-                <div id="no-history-state" class="empty-state">
-                    <p>No past workouts found. Start a new one to begin!</p>
-                </div>
-            </main>
+    <a href="/Dashboard/dashboard.html" class="back-button">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <div class="fitness-app-container">
+        <div class="fitness-input-section">
+            <h2><i class="fa-solid fa-dumbbell"></i> Fitness Tracker</h2>
+            <form id="workout-form" class="workout-input">
+                <input type="text" id="exercise-name" placeholder="Exercise Name" required>
+                <input type="number" id="sets" placeholder="Sets" min="1" required>
+                <input type="number" id="reps" placeholder="Reps" min="1" required>
+                <input type="number" id="weight" placeholder="Weight (kg)" min="0" required>
+                <button type="submit" class="add-btn">Add</button>
+            </form>
         </div>
 
-        <div id="workout-session-view" class="hidden">
-            <header class="session-header">
-                <div>
-                    <h2>Active Workout</h2>
-                    <p id="workout-date"></p>
-                </div>
-                <button id="finish-workout-btn" class="primary-btn"><i class="fas fa-check"></i> Finish Workout</button>
-            </header>
-
-            <div id="exercise-list">
+        <div class="fitness-stats">
+            <div class="stat-item">
+                <span class="stat-number" id="workout-streak">0</span>
+                <span class="stat-label">Day Streak</span>
             </div>
+            <div class="stat-item">
+                <span class="stat-number" id="weekly-volume">0</span>
+                <span class="stat-label">Weekly Volume (kg)</span>
+            </div>
+        </div>
 
-            <form id="add-exercise-form">
-                <input type="text" id="exercise-name-input" placeholder="Enter Exercise Name (e.g., Bench Press)"
-                    required>
-                <button type="submit">Add Exercise</button>
-            </form>
+        <div class="history-list-container">
+            <div id="workout-loading" class="loading-state">Loading history...</div>
+            <ul id="history-list" class="history-list"></ul>
+            <div id="workout-empty-state" class="empty-state" style="display: none;">
+                <div class="empty-icon">🏋️‍♂️</div>
+                <p>No workouts logged yet. Add one above!</p>
+            </div>
         </div>
     </div>
 
-    <script type="module" src="/JavaScript/firebase-config.js"></script>
-    <script type="module" src="fitness.js"></script>
+    <script src="/JavaScript/firebase-config.js" type="module"></script>
+    <script src="fitness.js" type="module"></script>
 </body>
 
 </html>
