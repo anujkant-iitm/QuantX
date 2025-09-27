@@ -1,0 +1,233 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #000000);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gym-app-container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.primary-btn {
+    background: #7482ff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.primary-btn:hover {
+    background: #5a68e8;
+}
+
+/* --- Dashboard View --- */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.history-section h3 {
+    margin-bottom: 20px;
+}
+
+.history-item {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.history-item-date {
+    font-weight: 600;
+}
+
+.history-item-summary {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.empty-state {
+    text-align: center;
+    color: #aaa;
+    padding: 40px 0;
+}
+
+/* --- Session View --- */
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+#workout-date {
+    color: #aaa;
+}
+
+#exercise-list {
+    margin-bottom: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.exercise-log {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.exercise-log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.exercise-log-header h4 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.delete-exercise-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.delete-exercise-btn:hover {
+    color: #ff4d4d;
+}
+
+.set-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.set-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
+.set-item:last-child {
+    border-bottom: none;
+}
+
+.delete-set-btn {
+    color: #aaa;
+    cursor: pointer;
+}
+
+#add-set-form {
+    display: flex;
+    gap: 10px;
+}
+
+#add-set-form input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+#add-set-form button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-exercise-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#add-exercise-form input {
+    flex-grow: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 1rem;
+}
+
+#add-exercise-form button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-weight: 600;
+    padding: 0 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
