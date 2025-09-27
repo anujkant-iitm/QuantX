@@ -38,8 +38,8 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     overflow: hidden;
 }
@@ -175,11 +175,37 @@ body {
     border-color: #28a745;
 }
 
+/* --- FIX STARTS HERE --- */
+.task-details {
+    flex-grow: 1;
+    /* Allows this element to take up available space */
+    display: flex;
+    flex-direction: column;
+    /* Stacks task text and timestamps vertically */
+}
+
 .todo-text {
-    flex: 1;
     font-size: 16px;
     color: #e0e0e0;
+    margin-bottom: 8px;
+    /* Adds space between text and timestamps */
 }
+
+.timestamps {
+    width: 100%;
+    text-align: right;
+    /* Aligns the timestamps to the right */
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.timestamp {
+    margin-left: 15px;
+    /* Adds space between the two timestamps */
+}
+
+/* --- FIX ENDS HERE --- */
+
 
 .todo-actions {
     display: flex;
@@ -238,21 +264,3 @@ body {
     font-size: 14px;
     color: #aaa;
 }
-
-/* ... (previous styles) ... */
-
-.task-details {
-    flex: 1;
-}
-
-.timestamps {
-    font-size: 0.8rem;
-    color: #aaa;
-    margin-top: 5px;
-}
-
-.timestamp {
-    margin-right: 15px;
-}
-
-/* ... (rest of the styles) ... */
