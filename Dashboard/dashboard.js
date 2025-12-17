@@ -164,3 +164,103 @@ function setupUIEventListeners() {
         signOut(auth).catch(error => console.error('Sign out error', error));
     });
 }
+
+// ----------------------------------------------------------------------------
+// Graphs, charts , and visualizations can be added below as needed
+// ----------------------------------------------------------------------------
+
+// Example: Additional Chart.js visualizations
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. College Attendance Chart (Doughnut)
+            const ctxCollege = document.getElementById('collegeAttendanceChart').getContext('2d');
+            new Chart(ctxCollege, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Attended', 'Skipped'],
+                    datasets: [{
+                        data: [85, 15], 
+                        backgroundColor: ['#4caf50', '#e0e0e0'],
+                        hoverBackgroundColor: ['#45a049', '#d5d5d5'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { 
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Productivity Chart (Line/Bar Combo)
+            const ctxProd = document.getElementById('productivityChart').getContext('2d');
+            new Chart(ctxProd, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Study Hours',
+                            data: [4, 5, 3, 6, 4, 2, 1],
+                            backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                            borderRadius: 4,
+                            order: 2
+                        },
+                        {
+                            label: 'Sleep Quality (1-10)',
+                            data: [7, 6, 8, 5, 7, 9, 8],
+                            type: 'line',
+                            borderColor: '#2196f3',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: false,
+                            order: 1,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { usePointStyle: true, boxWidth: 8 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Hours' },
+                            grid: { display: false }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 10,
+                            grid: { drawOnChartArea: false } // only want the grid lines for one axis to show up
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });

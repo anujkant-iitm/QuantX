@@ -9,6 +9,48 @@
     <link rel="icon" type="image/x-icon" href="CSS/images/White-logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Inline styles for new elements to ensure they look okay immediately -->
+    <style>
+        .event-item, .expense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .event-item:last-child, .expense-item:last-child { border-bottom: none; }
+        .event-date {
+            background: #f0f2f5;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 50px;
+            margin-right: 10px;
+        }
+        .quick-note-area {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            resize: none;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+        .save-note-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .expense-summary h3 { font-size: 1.5rem; margin: 0; color: #333; }
+        .expense-limit { font-size: 0.9rem; color: #777; font-weight: normal; }
+        .amount-negative { color: #e74c3c; font-weight: bold; }
+    </style>
 </head>
 
 <body>
@@ -32,95 +74,177 @@
                 <a href="#"><i class="fa-solid fa-wallet"></i><span>Expenses</span></a>
                 <a href="#"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
             </nav>
-            <button class="logout" id="logoutBtn"><i
+            <button type="button" class="logout" id="logoutBtn"><i
                     class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
         <main class="dashboard-content">
             <header class="dashboard-header">
                 <div class="header-left">
-                    <button class="hamburger" id="hamburger" title="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+                    <button type="button" class="hamburger" id="hamburger" title="Toggle menu"><i class="fa-solid fa-bars"></i></button>
                     <div class="welcome-section">
-                        <h1 id="welcome-message">Welcome, User!</h1>
+                        <h1 id="welcome-message">Welcome, Alex!</h1>
                         <p id="current-date">Thursday, 18 September</p>
                     </div>
                 </div>
                 <div class="header-right">
-                    <button class="notification-btn" title="Notifications"><i class="fa-solid fa-bell"></i></button>
+                    <button type="button" class="notification-btn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="badge">3</span></button>
                     <img id="profile-pic" src="/CSS/images/QuantX_logo.png" alt="Profile" class="avatar" />
                 </div>
             </header>
 
             <div class="dashboard-grid">
+                <!-- AI Insight Card -->
                 <section class="card card-ai-suggestion">
                     <div class="card-glow"></div>
                     <div class="card-content">
                         <h2 class="card-title"><i class="fa-solid fa-robot"></i> AI Insight of the Day</h2>
-                        <p id="ai-suggestion-text">"Based on your upcoming deadlines and recent workouts, consider a
-                            30-minute cardio session to boost focus and reduce stress."</p>
+                        <p id="ai-suggestion-text">
+                            "Your attendance in <strong>Data Structures</strong> is 92%. You can safely skip tomorrow's lecture to focus on your <strong>Hackathon Project</strong> without dropping below the 75% threshold. Also, don't forget your protein intake today!"
+                        </p>
                     </div>
                 </section>
 
+                <!-- Productivity Chart -->
                 <section class="card card-large">
-                    <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> Weekly Productivity</h2>
+                    <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> Academic vs. Wellness Balance</h2>
                     <div class="chart-container">
                         <canvas id="productivityChart"></canvas>
                     </div>
                 </section>
 
+                <!-- Priority Tasks -->
                 <section class="card">
                     <h2 class="card-title"><i class="fa-solid fa-list-check"></i> Today's Priority Tasks</h2>
                     <ul id="todo-list" class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="task1">
+                            <label for="task1">Submit DBMS Assignment <span class="tag academic">Academic</span></label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task2">
+                            <label for="task2">Gym: Upper Body (1.5 hrs) <span class="tag health">Health</span></label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task3">
+                            <label for="task3">Review React Notes <span class="tag study">Study</span></label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="task4">
+                            <label for="task4">Meal Prep (Chicken & Rice) <span class="tag health">Nutrition</span></label>
+                        </li>
                     </ul>
                     <a href="/To-Do/to-do.html" class="view-all-tasks-btn">Manage All Tasks &rarr;</a>
                 </section>
 
+                <!-- Nutrition Snapshot -->
                 <section class="card">
                     <h2 class="card-title"><i class="fa-solid fa-utensils"></i> Nutrition Snapshot</h2>
                     <div class="nutrition-item">
-                        <div class="nutrition-label"><span>Calories</span><span id="calories-stats">1400 / 2000
-                                kcal</span></div>
+                        <div class="nutrition-label"><span>Calories</span><span id="calories-stats">1,850 / 2,400 kcal</span></div>
                         <div class="progress-bar">
-                            <div id="calories-progress" class="progress" style="width: 70%; background-color: #4caf50;">
-                            </div>
+                            <div id="calories-progress" class="progress" style="width: 77%; background-color: #4caf50;"></div>
                         </div>
                     </div>
                     <div class="nutrition-item">
-                        <div class="nutrition-label"><span>Protein</span><span id="protein-stats">120 / 150 g</span>
-                        </div>
+                        <div class="nutrition-label"><span>Protein</span><span id="protein-stats">110 / 160 g</span></div>
                         <div class="progress-bar">
-                            <div id="protein-progress" class="progress" style="width: 80%; background-color: #f44336;">
+                            <div id="protein-progress" class="progress" style="width: 68%; background-color: #2196f3;"></div>
+                        </div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-label"><span>Water</span><span id="water-stats">2.5 / 4 L</span></div>
+                        <div class="progress-bar">
+                            <div id="water-progress" class="progress" style="width: 62%; background-color: #00bcd4;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attendance Chart -->
+                <section class="card">
+                    <h2 class="card-title"><i class="fa-solid fa-graduation-cap"></i> Overall Attendance</h2>
+                    <div class="chart-container" style="position: relative; height: 200px; display: flex; justify-content: center; align-items: center;">
+                        <canvas id="collegeAttendanceChart"></canvas>
+                        <div style="position: absolute; text-align: center; pointer-events: none;">
+                            <span style="font-size: 1.8rem; font-weight: bold; color: #333;">85%</span>
+                            <div style="font-size: 0.8rem; color: #666;">Safe Zone</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NEW CARD: Upcoming Events -->
+                <section class="card">
+                    <h2 class="card-title"><i class="fa-solid fa-calendar-days"></i> Upcoming Events</h2>
+                    <div class="events-list">
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div>SEP</div>
+                                <div>19</div>
+                            </div>
+                            <div class="event-info">
+                                <strong>Hackathon Kickoff</strong>
+                                <div style="font-size: 0.85rem; color: #666;">10:00 AM - Auditorium</div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div>SEP</div>
+                                <div>21</div>
+                            </div>
+                            <div class="event-info">
+                                <strong>Project Submission</strong>
+                                <div style="font-size: 0.85rem; color: #666;">11:59 PM - Online</div>
                             </div>
                         </div>
                     </div>
                 </section>
 
+                <!-- NEW CARD: Quick Notes -->
                 <section class="card">
-                    <h2 class="card-title"><i class="fa-solid fa-chart-pie"></i> Attendance Tracker</h2>
-                    <div class="chart-container pie-chart-container">
-                        <div class="attendance-chart">
-                            <canvas id="attendanceChart"></canvas>
+                    <h2 class="card-title"><i class="fa-solid fa-note-sticky"></i> Quick Note</h2>
+                    <textarea class="quick-note-area" placeholder="Type a quick thought or reminder here..."></textarea>
+                    <button type="button" class="save-note-btn">Save to Notes</button>
+                </section>
+
+                <!-- NEW CARD: Recent Expenses -->
+                <section class="card">
+                    <h2 class="card-title"><i class="fa-solid fa-wallet"></i> Recent Expenses</h2>
+                    <div class="expense-summary" style="margin-bottom: 15px;">
+                        <h3>$450.00 <span class="expense-limit">/ $600 Budget</span></h3>
+                    </div>
+                    <div class="expenses-list">
+                        <div class="expense-item">
+                            <span><i class="fa-solid fa-coffee" style="margin-right:8px; color:#888;"></i> Starbucks</span>
+                            <span class="amount-negative">-$5.50</span>
                         </div>
-                        <div class="attendance-percentage">Attendance: 98%</div>
+                        <div class="expense-item">
+                            <span><i class="fa-solid fa-book" style="margin-right:8px; color:#888;"></i> Textbooks</span>
+                            <span class="amount-negative">-$45.00</span>
+                        </div>
+                        <div class="expense-item">
+                            <span><i class="fa-solid fa-taxi" style="margin-right:8px; color:#888;"></i> Uber</span>
+                            <span class="amount-negative">-$12.00</span>
+                        </div>
                     </div>
                 </section>
+
             </div>
         </main>
     </div>
 
-    <div class="modal-container" id="profileModal">
-    </div>
+    <div class="modal-container" id="profileModal"></div>
 
-    <button class="ai-chat-btn" id="ai-chat-btn" aria-label="Open AI Chat">
+    <button type="button" class="ai-chat-btn" id="ai-chat-btn" aria-label="Open AI Chat">
         <i class="fa-solid fa-robot"></i>
     </button>
+    
     <div class="chat-popup" id="chat-popup">
         <div class="chat-header">
             <h3>AI Assistant</h3>
-            <button class="close-chat-btn" id="close-chat-btn">&times;</button>
+            <button type="button" class="close-chat-btn" id="close-chat-btn">&times;</button>
         </div>
         <div class="chat-messages" id="chat-messages">
-            <div class="message received">Hi! How can I help you be more productive today?</div>
+            <div class="message received">Hi Alex! I noticed you have a heavy workload today. Should I reschedule your gym session to the evening?</div>
         </div>
         <form class="chat-input-form" id="chat-form">
             <input type="text" id="chat-input" placeholder="Ask me anything..." autocomplete="off">
@@ -129,6 +253,7 @@
     </div>
 
     <script type="module" src="dashboard.js"></script>
+
 </body>
 
 </html>

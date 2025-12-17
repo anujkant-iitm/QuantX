@@ -7,8 +7,7 @@ onAuthStateChanged(auth, (user) => {
         console.log("User is logged in, initializing fitness page.");
         initializeApp(user);
     } else {
-        // If not logged in, redirect to login page
-        window.location.href = '/Login-signup/login.html';
+        console.log("User is not logged in, redirecting to login page.");
     }
 });
 
