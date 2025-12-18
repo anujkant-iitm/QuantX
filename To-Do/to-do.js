@@ -1,10 +1,11 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { auth } from '/JavaScript/firebase-config.js';
 
 const db = getFirestore();
 let currentUser = null;
 let currentFilter = 'all';
+let allTasks = [];
 
 // UI Elements
 const todoForm = document.getElementById('todo-form');
@@ -34,7 +35,7 @@ function loadTasks() {
     const q = query(todosRef, orderBy("createdAt", "desc"));
 
     onSnapshot(q, (snapshot) => {
-        let allTasks = [];
+        allTasks = [];
         snapshot.forEach(doc => allTasks.push({ id: doc.id, ...doc.data() }));
         renderTasks(allTasks);
         updateStats(allTasks);
@@ -140,7 +141,7 @@ filterBtns.forEach(btn => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.filter;
-        loadTasks();
+        renderTasks(allTasks);
     });
 });
 
